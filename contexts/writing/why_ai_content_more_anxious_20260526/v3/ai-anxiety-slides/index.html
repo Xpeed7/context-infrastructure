@@ -1,0 +1,1125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>为什么 AI 内容越看越多，人反而越焦虑</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #fbfaf6;
+      --paper-deep: #f3eee5;
+      --ink: #22211d;
+      --muted: #716d63;
+      --faint: #928b7c;
+      --line: #e3dacb;
+      --line-strong: #cfc3b0;
+      --nav: #f3eee5;
+      --coral: #c76752;
+      --green: #3e7e74;
+      --blue: #4a6f91;
+      --gold: #aa7a36;
+      --lavender: #6f6fae;
+      --radius: 8px;
+      --side: 320px;
+      --deck-width: 1720px;
+      --deck-height: 900px;
+      --deck-scale: 1;
+      --frame-gap: 16px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      padding: var(--frame-gap);
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(34, 33, 29, .032) 1px, transparent 1px) 0 0 / 26px 26px,
+        linear-gradient(rgba(34, 33, 29, .026) 1px, transparent 1px) 0 0 / 26px 26px,
+        var(--paper);
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .deck-shell {
+      width: calc(var(--deck-width) * var(--deck-scale));
+      height: calc(var(--deck-height) * var(--deck-scale));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .deck-frame {
+      position: relative;
+      width: var(--deck-width);
+      height: var(--deck-height);
+      overflow: hidden;
+      transform: scale(var(--deck-scale));
+      transform-origin: center center;
+      background:
+        linear-gradient(90deg, rgba(34, 33, 29, .032) 1px, transparent 1px) 0 0 / 26px 26px,
+        linear-gradient(rgba(34, 33, 29, .026) 1px, transparent 1px) 0 0 / 26px 26px,
+        var(--paper);
+      border: 1px solid rgba(34, 33, 29, .12);
+      border-radius: 14px;
+      box-shadow: 0 24px 70px rgba(32, 31, 27, .12);
+    }
+
+    .deck-frame::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      pointer-events: none;
+      border: 1px solid rgba(34, 33, 29, .08);
+      border-radius: 8px;
+    }
+
+    .deck {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: var(--side) minmax(0, 1fr);
+      width: 100%;
+      height: 100%;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-height: 0;
+      height: 100%;
+      padding: 30px 24px 24px;
+      background:
+        linear-gradient(rgba(34, 33, 29, .028) 1px, transparent 1px) 0 0 / 26px 26px,
+        var(--nav);
+      border-right: 1px solid var(--line);
+    }
+
+    .brand {
+      display: grid;
+      gap: 8px;
+    }
+
+    .brand small,
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-size: 14px;
+      text-transform: lowercase;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Songti SC", serif;
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.15;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .nav-list {
+      display: grid;
+      flex: 1;
+      gap: 8px;
+      min-height: 0;
+      overflow: auto;
+      padding-right: 2px;
+      scrollbar-width: thin;
+    }
+
+    .nav-item {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 14px;
+      align-items: start;
+      width: 100%;
+      padding: 14px 12px 14px 10px;
+      color: var(--muted);
+      background: transparent;
+      border: 0;
+      border-left: 2px solid transparent;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      text-align: left;
+      cursor: pointer;
+      transition: color 220ms var(--ease), background 220ms var(--ease), border-color 220ms var(--ease);
+    }
+
+    .nav-item:hover,
+    .nav-item:focus-visible {
+      color: var(--ink);
+      background: rgba(255, 255, 255, .5);
+      outline: none;
+    }
+
+    .nav-item.active {
+      color: var(--ink);
+      background: rgba(255, 255, 255, .72);
+      border-left-color: var(--coral);
+    }
+
+    .nav-no {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      opacity: .72;
+    }
+
+    .nav-title {
+      display: block;
+      font-size: 18px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .nav-subtitle {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .side-footer {
+      display: grid;
+      gap: 12px;
+      margin-top: auto;
+      color: var(--muted);
+    }
+
+    .progress-track {
+      height: 3px;
+      overflow: hidden;
+      background: rgba(34, 33, 29, .12);
+      border-radius: 999px;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--coral), #e5b767);
+      transition: width 360ms var(--ease);
+    }
+
+    .counter {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+    }
+
+    .copyright {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .stage {
+      position: relative;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      align-content: center;
+      min-height: 0;
+      padding: 58px 72px 120px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(18px);
+      transition: opacity 420ms var(--ease), transform 420ms var(--ease);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .slide.dense {
+      align-content: start;
+      padding-top: 44px;
+    }
+
+    .slide-inner {
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      transform: translateY(-18px);
+    }
+
+    .slide.dense .slide-inner {
+      transform: none;
+    }
+
+    .kicker {
+      margin: 0 0 14px;
+      color: var(--coral);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .title,
+    .slide-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Songti SC", serif;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .title {
+      max-width: 920px;
+      font-size: 70px;
+      line-height: 1.08;
+    }
+
+    .slide-title {
+      max-width: 900px;
+      margin-bottom: 18px;
+      font-size: 54px;
+      line-height: 1.12;
+    }
+
+    .lead {
+      max-width: 840px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 23px;
+      line-height: 1.78;
+    }
+
+    .hero-meta {
+      display: inline-grid;
+      gap: 10px;
+      margin-top: 30px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, .72);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 34px rgba(34, 33, 29, .06);
+    }
+
+    .hero-credit {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.04fr) minmax(300px, .96fr);
+      gap: 28px;
+      align-items: stretch;
+      margin-top: 34px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .panel,
+    .card,
+    .note,
+    .quote {
+      background: rgba(255, 255, 255, .64);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 34px rgba(34, 33, 29, .06);
+    }
+
+    .panel {
+      padding: 26px;
+    }
+
+    .card {
+      min-height: 150px;
+      padding: 22px;
+    }
+
+    .card h3,
+    .panel h3,
+    .note h3 {
+      margin: 0 0 10px;
+      font-size: 21px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .card p,
+    .panel p,
+    .note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .big-number {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--faint);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 36px;
+    }
+
+    .accent-green { border-top: 4px solid var(--green); }
+    .accent-blue { border-top: 4px solid var(--blue); }
+    .accent-coral { border-top: 4px solid var(--coral); }
+    .accent-lavender { border-top: 4px solid var(--lavender); }
+    .accent-gold { border-top: 4px solid var(--gold); }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 11px;
+      color: var(--ink);
+      background: rgba(244, 239, 230, .9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 16px;
+      align-items: start;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .time {
+      color: var(--gold);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+    }
+
+    .timeline-row strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 18px;
+    }
+
+    .timeline-row span {
+      display: block;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .diagram {
+      display: grid;
+      gap: 13px;
+    }
+
+    .node {
+      position: relative;
+      padding: 16px 18px;
+      background: var(--paper);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+    }
+
+    .node::after {
+      content: "";
+      position: absolute;
+      left: 28px;
+      bottom: -14px;
+      width: 1px;
+      height: 14px;
+      background: var(--line-strong);
+    }
+
+    .node:last-child::after {
+      display: none;
+    }
+
+    .node strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .node span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .quote {
+      padding: 34px;
+      background: #fffdf9;
+    }
+
+    .quote p {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", "Songti SC", serif;
+      font-size: 38px;
+      line-height: 1.48;
+    }
+
+    .quote footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .note {
+      padding: 22px;
+      background:
+        linear-gradient(90deg, rgba(62, 126, 116, .12), transparent 74%),
+        rgba(255, 255, 255, .68);
+    }
+
+    .note .label {
+      display: inline-block;
+      margin-bottom: 9px;
+      color: var(--green);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+    }
+
+    .material-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 249, .74);
+      font-size: 15px;
+    }
+
+    .material-table th,
+    .material-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    .material-table th {
+      color: var(--ink);
+      background: rgba(244, 239, 230, .86);
+      font-size: 13px;
+      font-weight: 650;
+      text-align: left;
+    }
+
+    .material-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .material-table td:first-child {
+      width: 36%;
+      font-weight: 620;
+    }
+
+    .controls {
+      position: absolute;
+      right: 32px;
+      bottom: 30px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
+
+    .control-btn {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--ink);
+      background: rgba(255, 255, 255, .76);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+
+    .control-btn:hover,
+    .control-btn:focus-visible {
+      background: #fffdf9;
+      outline: none;
+    }
+
+    .animate {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 460ms var(--ease), transform 460ms var(--ease);
+      transition-delay: calc(var(--i, 0) * 70ms);
+    }
+
+    .slide.active .animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      body {
+        display: block;
+        min-height: 100vh;
+        overflow: auto;
+        padding: 0;
+      }
+
+      .deck-shell,
+      .deck-frame {
+        width: 100%;
+        height: auto;
+        transform: none;
+      }
+
+      .deck-frame {
+        min-height: 100vh;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .deck-frame::before,
+      .sidebar,
+      .controls {
+        display: none;
+      }
+
+      .deck {
+        display: block;
+      }
+
+      .stage {
+        height: auto;
+        overflow: visible;
+      }
+
+      .slide {
+        position: relative;
+        display: block;
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+        padding: 52px 24px 70px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .slide-inner {
+        width: 100%;
+        transform: none;
+      }
+
+      .title {
+        font-size: 44px;
+      }
+
+      .slide-title {
+        font-size: 34px;
+      }
+
+      .lead {
+        font-size: 18px;
+      }
+
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck-shell">
+    <div class="deck-frame">
+      <div class="deck">
+        <aside class="sidebar">
+          <div class="brand">
+            <small>thinking-notes #ai-anxiety</small>
+            <h1>为什么 AI 内容越看越多，人反而越焦虑</h1>
+            <p>比工具更重要的，是构建行动系统。</p>
+          </div>
+          <nav class="nav-list" id="slideNav" aria-label="Slides"></nav>
+          <footer class="side-footer">
+            <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+            <div class="counter"><span id="currentIndex">01</span><span id="totalIndex">16</span></div>
+            <div class="copyright">
+              <strong>Web slides draft</strong><br>
+              Use ← / → or click the controls.
+            </div>
+          </footer>
+        </aside>
+
+        <main class="stage">
+          <section class="slide active" data-title="封面">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">AI Anxiety / Opening</p>
+              <h2 class="title animate" style="--i:1">为什么 AI 内容越看越多，人反而越焦虑？</h2>
+              <p class="lead hero-lead animate" style="--i:2">比工具更重要的，是构建行动系统。不是继续收藏第 21 个工具，而是让自己真的开始跑起来。</p>
+              <div class="hero-meta animate" style="--i:3">
+                <div class="hero-credit">
+                  <strong>Topic</strong><span>AI 信息焦虑</span><strong>Format</strong><span>Web slides</span>
+                </div>
+                <div class="copyright">从一篇公众号文章，改成一场更适合分享的演示稿。</div>
+              </div>
+              <div class="chips animate" style="--i:4">
+                <span class="chip">工具清单</span>
+                <span class="chip">行动路径</span>
+                <span class="chip">反馈闭环</span>
+                <span class="chip">上下文供给</span>
+                <span class="chip">资产积累</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="开场">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Opening</p>
+              <h2 class="slide-title animate" style="--i:1">这半年，如果你对 AI 稍微上点心，大概率都过得有点分裂</h2>
+              <p class="lead animate" style="--i:2">一边觉得这玩意真猛，谁都在提效，谁都在起飞；另一边又忍不住怀疑自己：我也没少看啊，怎么真到自己干活的时候，还是老样子？</p>
+              <div class="three-col">
+                <article class="card accent-blue animate" style="--i:3">
+                  <span class="big-number">01</span>
+                  <h3>收藏很多</h3>
+                  <p>最强工作流、模型测评、prompt 模板，先存一下。</p>
+                </article>
+                <article class="card accent-green animate" style="--i:4">
+                  <span class="big-number">02</span>
+                  <h3>围观很多</h3>
+                  <p>群里、时间线里、收藏夹里，全是新可能。</p>
+                </article>
+                <article class="card accent-coral animate" style="--i:5">
+                  <span class="big-number">03</span>
+                  <h3>落地很少</h3>
+                  <p>写文章、做方案、改代码时，第一反应还是靠自己硬顶。</p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="三个问题">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Agenda</p>
+              <h2 class="slide-title animate" style="--i:1">今天只聊三个问题</h2>
+              <div class="three-col">
+                <article class="card accent-coral animate" style="--i:2">
+                  <span class="big-number">01</span>
+                  <h3>为什么越看越焦虑</h3>
+                  <p>信息没有变成进展，反而变成认知负债。</p>
+                </article>
+                <article class="card accent-blue animate" style="--i:3">
+                  <span class="big-number">02</span>
+                  <h3>为什么工具越多越乱</h3>
+                  <p>局部兴奋不等于稳定能力，很多人一直在重启。</p>
+                </article>
+                <article class="card accent-green animate" style="--i:4">
+                  <span class="big-number">03</span>
+                  <h3>怎么搭行动系统</h3>
+                  <p>反馈闭环、上下文供给、资产积累，先跑一轮真实任务。</p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="更新流">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Part 1 / Update Feed</p>
+              <h2 class="slide-title animate" style="--i:1">你拿到的不是行动路径，而是一条更新流</h2>
+              <div class="two-col">
+                <div class="panel animate" style="--i:2">
+                  <h3>更新流告诉你什么？</h3>
+                  <div class="timeline">
+                    <div class="timeline-row"><span class="time">Today</span><span><strong>新模型发布</strong>参数、价格、榜单和体验截图。</span></div>
+                    <div class="timeline-row"><span class="time">Tomorrow</span><span><strong>新插件火了</strong>别人已经接进工作流，看起来效率翻倍。</span></div>
+                    <div class="timeline-row"><span class="time">Next</span><span><strong>新模板来了</strong>你又多存了一套“以后肯定用得上”的 prompt。</span></div>
+                  </div>
+                </div>
+                <aside class="note animate" style="--i:3">
+                  <span class="label">真正缺失的那一步</span>
+                  <p>如果明天正常上班，手头就有一篇文章要写、一个汇报要做、一段代码要改，你到底从哪一步开始？多数内容没有继续往下讲。</p>
+                </aside>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="认知负债">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Part 1 / Cognitive Debt</p>
+              <h2 class="slide-title animate" style="--i:1">每多看一篇内容，脑子里就多一个待办</h2>
+              <p class="lead animate" style="--i:2">这个要不要试，那个要不要学，这个工具会不会错过，那个方法是不是已经落后。表面上你在吸收信息，实际上你是在不停给自己挂账。</p>
+              <div class="three-col">
+                <article class="card accent-gold animate" style="--i:3"><span class="big-number">+1</span><h3>要试试</h3><p>收藏夹里又多一个“以后研究”。</p></article>
+                <article class="card accent-lavender animate" style="--i:4"><span class="big-number">+1</span><h3>不能错过</h3><p>别人都在讨论，好像不看就落后了。</p></article>
+                <article class="card accent-coral animate" style="--i:5"><span class="big-number">+1</span><h3>还没落地</h3><p>知道的越来越多，跑通的没有一起增长。</p></article>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="工具思维">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Part 2 / Tool Thinking</p>
+              <h2 class="slide-title animate" style="--i:1">工具这东西，特别容易制造一种“我在进步”的错觉</h2>
+              <div class="two-col">
+                <div class="quote animate" style="--i:2">
+                  <p>局部兴奋，不等于稳定能力。</p>
+                  <footer>这句话是整篇文章的第二个支点。</footer>
+                </div>
+                <div class="diagram animate" style="--i:3">
+                  <div class="node"><strong>新 prompt</strong><span>回答好像顺了一点。</span></div>
+                  <div class="node"><strong>新插件</strong><span>流程好像快了一点。</span></div>
+                  <div class="node"><strong>新工作流</strong><span>当下很爽，像摸到一个捷径。</span></div>
+                  <div class="node"><strong>真实问题</strong><span>下次换个场景，又不知道怎么下手。</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="稳定能力">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Part 2 / Stable Capability</p>
+              <h2 class="slide-title animate" style="--i:1">稳定能力是什么？</h2>
+              <div class="panel animate" style="--i:2">
+                <table class="material-table">
+                  <thead>
+                    <tr>
+                      <th>不是</th>
+                      <th>而是</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>又知道一个新功能</td><td>下次遇到类似任务，知道怎么开始。</td></tr>
+                    <tr><td>一次 demo 看起来很强</td><td>换个模型、换个场景，仍然能复用方法。</td></tr>
+                    <tr><td>靠灵感把结果试出来</td><td>知道先给什么背景，结果怎么判断，做坏了怎么改。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="lead animate" style="--i:3; margin-top:28px">说难听点，我们很多时候不是在学怎么把 AI 用进工作里，而是在学怎么持续对 AI 保持兴奋。</p>
+            </div>
+          </section>
+
+          <section class="slide" data-title="重启">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Part 2 / Restart Loop</p>
+              <h2 class="slide-title animate" style="--i:1">最麻烦的是，你一直在重启</h2>
+              <div class="two-col">
+                <div class="diagram animate" style="--i:2">
+                  <div class="node"><strong>今天靠灵感</strong><span>突然想到一个问法，效果还不错。</span></div>
+                  <div class="node"><strong>明天靠运气</strong><span>换了任务，换了模型，又开始试错。</span></div>
+                  <div class="node"><strong>后天靠现搜</strong><span>临时翻收藏夹，重新找别人怎么做。</span></div>
+                </div>
+                <aside class="note animate" style="--i:3">
+                  <span class="label">问题不只是内容太多</span>
+                  <p>更深一层的问题是，你一直在收集工具，却没有训练自己的出手动作。工具当然重要，但如果每次上场都像重新开一局，焦虑只会反复来。</p>
+                </aside>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="行动系统">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Part 3 / Action System</p>
+              <h2 class="slide-title animate" style="--i:1">真正该搭的不是工具箱，而是一套自己的行动系统</h2>
+              <p class="lead animate" style="--i:2">它不一定复杂，甚至一开始可以很粗糙。但它至少要让你每次都知道：这件事怎么开始，AI 在哪能帮我，结果怎么判断，做完之后什么值得留下来。</p>
+              <div class="chips animate" style="--i:3">
+                <span class="chip">怎么开始</span>
+                <span class="chip">给什么背景</span>
+                <span class="chip">怎么判断</span>
+                <span class="chip">怎么修正</span>
+                <span class="chip">留下什么</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="三个结构">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Part 3 / Three Structures</p>
+              <h2 class="slide-title animate" style="--i:1">一套最小的 AI 行动系统，至少有三块</h2>
+              <div class="three-col">
+                <article class="card accent-coral animate" style="--i:2">
+                  <span class="big-number">01</span>
+                  <h3>反馈闭环</h3>
+                  <p>知道这次结果哪里对、哪里不对，下一轮该怎么改。</p>
+                </article>
+                <article class="card accent-blue animate" style="--i:3">
+                  <span class="big-number">02</span>
+                  <h3>上下文供给</h3>
+                  <p>把任务背景、目标、限制条件和判断标准讲清楚。</p>
+                </article>
+                <article class="card accent-green animate" style="--i:4">
+                  <span class="big-number">03</span>
+                  <h3>资产积累</h3>
+                  <p>把有效提示、流程、案例和判断标准沉淀下来。</p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="反馈闭环">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Structure 01 / Feedback Loop</p>
+              <h2 class="slide-title animate" style="--i:1">真正值钱的不是 AI 一次就答对</h2>
+              <div class="two-col">
+                <div class="quote animate" style="--i:2">
+                  <p>而是你能不能根据结果，把它越调越准。</p>
+                </div>
+                <div class="diagram animate" style="--i:3">
+                  <div class="node"><strong>输出</strong><span>让 AI 先跑一版，不追求完美。</span></div>
+                  <div class="node"><strong>评估</strong><span>哪里能用，哪里不行，为什么不行。</span></div>
+                  <div class="node"><strong>修正</strong><span>补上下文，改标准，缩小任务边界。</span></div>
+                  <div class="node"><strong>再跑</strong><span>下一版比上一版更接近真实需要。</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="上下文供给">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Structure 02 / Context Supply</p>
+              <h2 class="slide-title animate" style="--i:1">很多人问 AI，就像把半截话丢给实习生</h2>
+              <p class="lead animate" style="--i:2">你任务背景是什么，想要的语气是什么，边界条件是什么，什么能做什么不能做，这些你不说，AI 当然只能瞎蒙。</p>
+              <div class="three-col">
+                <article class="card accent-blue animate" style="--i:3"><span class="big-number">A</span><h3>背景</h3><p>这件事发生在什么业务、什么场景里。</p></article>
+                <article class="card accent-green animate" style="--i:4"><span class="big-number">B</span><h3>目标</h3><p>你希望它帮你完成到什么程度。</p></article>
+                <article class="card accent-gold animate" style="--i:5"><span class="big-number">C</span><h3>标准</h3><p>什么叫能用，什么叫不及格。</p></article>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="资产积累">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Structure 03 / Asset Accumulation</p>
+              <h2 class="slide-title animate" style="--i:1">真正会越用越顺的人，手里一定在慢慢积东西</h2>
+              <div class="two-col">
+                <div class="panel animate" style="--i:2">
+                  <h3>可以积累什么？</h3>
+                  <div class="timeline">
+                    <div class="timeline-row"><span class="time">Prompt</span><span><strong>好用提示</strong>下次不用重新想怎么开口。</span></div>
+                    <div class="timeline-row"><span class="time">Case</span><span><strong>成功案例</strong>知道什么任务适合交给 AI。</span></div>
+                    <div class="timeline-row"><span class="time">Rule</span><span><strong>判断标准</strong>知道什么结果算过关。</span></div>
+                  </div>
+                </div>
+                <aside class="note animate" style="--i:3">
+                  <span class="label">这才是复利</span>
+                  <p>你这次终于跑通一个像样的流程，结果转头就散了，下次又从头来，那当然累。资产积累，就是让你别每次都重新开局。</p>
+                </aside>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide dense" data-title="动手环节">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Practice / First Loop</p>
+              <h2 class="slide-title animate" style="--i:1">今天就能开始：拿一个真实任务跑第一轮闭环</h2>
+              <div class="panel animate" style="--i:2">
+                <table class="material-table">
+                  <thead>
+                    <tr>
+                      <th>步骤</th>
+                      <th>你要写下什么</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>01 任务目标</td><td>这次到底要交付什么，不要写虚词。</td></tr>
+                    <tr><td>02 已有背景</td><td>对象是谁、语气怎样、有哪些限制。</td></tr>
+                    <tr><td>03 结果标准</td><td>提前定义什么叫及格，别凭感觉说“还行”。</td></tr>
+                    <tr><td>04 AI 第一版输出</td><td>先看它在当前上下文下能做到什么程度。</td></tr>
+                    <tr><td>05 复盘记录</td><td>哪些能用、哪些不行、哪些值得下次复用。</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="lead animate" style="--i:3; margin-top:26px">任务越真实，你得到的反馈越真。不要为了练手造 demo，就拿今天手头那件事开跑。</p>
+            </div>
+          </section>
+
+          <section class="slide" data-title="结尾">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">Closing</p>
+              <h2 class="slide-title animate" style="--i:1">AI 内容以后只会更多，不会更少</h2>
+              <p class="lead animate" style="--i:2">真正能让人踏实下来的，不是把所有热点都追上，而是你手里慢慢有了一套自己的用法。</p>
+              <div class="quote animate" style="--i:3; margin-top:34px">
+                <p>别再给自己加第 21 个待办了。</p>
+                <footer>就拿今天手头那件事，跑出你的第一轮闭环。</footer>
+              </div>
+            </div>
+          </section>
+
+          <section class="slide" data-title="感谢">
+            <div class="slide-inner">
+              <p class="kicker animate" style="--i:0">End</p>
+              <h2 class="slide-title animate" style="--i:1">感谢看到这里</h2>
+              <p class="lead animate" style="--i:2">如果这套 slides 后面要做成公开分享，可以继续补两件事：一页你的真实 AI 工作流截图，一页你自己的最小系统模板。</p>
+            </div>
+          </section>
+
+          <div class="controls" aria-label="Slide controls">
+            <button class="control-btn" id="prevBtn" type="button" aria-label="上一页">‹</button>
+            <button class="control-btn" id="nextBtn" type="button" aria-label="下一页">›</button>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const mobileQuery = window.matchMedia("(max-width: 980px)");
+    const frameWidth = 1720;
+    const frameHeight = 900;
+    const frameGap = 32;
+
+    function updateDeckScale() {
+      if (mobileQuery.matches) {
+        root.style.setProperty("--deck-scale", "1");
+        return;
+      }
+      const availableWidth = Math.max(window.innerWidth - frameGap, 0);
+      const availableHeight = Math.max(window.innerHeight - frameGap, 0);
+      const scale = Math.min(1, availableWidth / frameWidth, availableHeight / frameHeight);
+      root.style.setProperty("--deck-scale", String(scale));
+    }
+
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const nav = document.querySelector("#slideNav");
+    const progress = document.querySelector("#progressBar");
+    const currentIndex = document.querySelector("#currentIndex");
+    const totalIndex = document.querySelector("#totalIndex");
+    const prevBtn = document.querySelector("#prevBtn");
+    const nextBtn = document.querySelector("#nextBtn");
+    let active = 0;
+
+    const pad = (number) => String(number).padStart(2, "0");
+    totalIndex.textContent = pad(slides.length);
+
+    const navSections = [
+      { index: 0, no: "00", title: "开场", subtitles: ["AI 内容越看越焦虑"] },
+      { index: 3, no: "01", title: "信息焦虑", subtitles: ["更新流", "认知负债"] },
+      { index: 5, no: "02", title: "工具思维", subtitles: ["局部兴奋", "一直重启"] },
+      { index: 8, no: "03", title: "行动系统", subtitles: ["反馈", "上下文", "资产"] },
+      { index: 13, no: "04", title: "动手闭环", subtitles: ["真实任务", "五步模板"] },
+      { index: 14, no: "05", title: "结尾", subtitles: ["开始动手"] },
+    ];
+
+    navSections.forEach((section) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "nav-item";
+      button.dataset.index = section.index;
+      button.innerHTML = `
+        <span class="nav-no">${section.no}</span>
+        <span>
+          <span class="nav-title">${section.title}</span>
+          ${section.subtitles.map((subtitle) => `<span class="nav-subtitle">${subtitle}</span>`).join("")}
+        </span>
+      `;
+      button.addEventListener("click", () => showSlide(section.index));
+      nav.appendChild(button);
+    });
+
+    const navItems = Array.from(document.querySelectorAll(".nav-item"));
+
+    function showSlide(index) {
+      active = Math.max(0, Math.min(index, slides.length - 1));
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("active", slideIndex === active);
+      });
+      navItems.forEach((item, itemIndex) => {
+        const start = navSections[itemIndex].index;
+        const next = navSections[itemIndex + 1]?.index ?? slides.length;
+        const isActiveSection = active >= start && active < next;
+        item.classList.toggle("active", isActiveSection);
+        item.setAttribute("aria-current", isActiveSection ? "page" : "false");
+      });
+      currentIndex.textContent = pad(active + 1);
+      progress.style.width = `${((active + 1) / slides.length) * 100}%`;
+      const url = new URL(window.location.href);
+      url.searchParams.set("slide", String(active + 1));
+      window.history.replaceState(null, "", url);
+    }
+
+    function next() {
+      showSlide(active + 1);
+    }
+
+    function prev() {
+      showSlide(active - 1);
+    }
+
+    prevBtn.addEventListener("click", prev);
+    nextBtn.addEventListener("click", next);
+
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        next();
+      }
+      if (["ArrowLeft", "PageUp"].includes(event.key)) {
+        event.preventDefault();
+        prev();
+      }
+      if (event.key === "Home") {
+        event.preventDefault();
+        showSlide(0);
+      }
+      if (event.key === "End") {
+        event.preventDefault();
+        showSlide(slides.length - 1);
+      }
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedSlide = Number.parseInt(params.get("slide") || "1", 10);
+    updateDeckScale();
+    window.addEventListener("resize", updateDeckScale);
+    mobileQuery.addEventListener("change", updateDeckScale);
+    showSlide(Number.isFinite(requestedSlide) ? requestedSlide - 1 : 0);
+  </script>
+</body>
+</html>
