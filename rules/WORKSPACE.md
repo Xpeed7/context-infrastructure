@@ -12,6 +12,7 @@
 ### 知识与记录
 - 通用调研报告：`contexts/survey_sessions/`
 - 思考 / 复盘 / 方法论：`contexts/thought_review/`
+- 公众号 / 博客文章创作（每篇一目录）：`contexts/writing/`（素材引用 `survey_sessions`，不复制）
 - 每日日志：`contexts/daily_records/`
 
 ### 系统与规则
@@ -31,3 +32,4 @@
 
 <!-- 随着你的项目增长，在这里添加活跃项目的快捷路由 -->
 <!-- 格式：- `project-name` → `adhoc_jobs/project_name/` (说明) -->
+- `playwright_demo` → `adhoc_jobs/playwright_demo/` (playwright-cli + spec-kit 驱动的 TodoMVC 测试演示，spec-driven testing 样板，12 场景全绿，独立 git)

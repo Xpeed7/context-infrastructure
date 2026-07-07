@@ -49,7 +49,8 @@ context-infrastructure/
 │   │   └── OBSERVATIONS.md      # 三层记忆系统的 L1/L2 层
 │   ├── survey_sessions/         # 调研报告存放目录
 │   ├── daily_records/           # 日常记录存放目录
-│   └── thought_review/          # 思考复盘存放目录
+│   ├── thought_review/          # 思考复盘存放目录
+│   └── writing/                 # 公众号/博客文章创作（每篇一目录）
 │
 ├── periodic_jobs/
 │   └── ai_heartbeat/
