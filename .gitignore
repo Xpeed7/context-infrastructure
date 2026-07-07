@@ -1,0 +1,17 @@
+# Secrets — never commit real values
+.env
+.env.local
+*.json.gacl
+ga4-service-account.json
+
+# Temporary / scratch work
+tmp/
+tmp_*/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
