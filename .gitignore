@@ -8,6 +8,9 @@ ga4-service-account.json
 tmp/
 tmp_*/
 
+# Private / work-internal material (do not publish)
+adhoc_jobs/email_to_cto/
+
 # Python
 .venv/
 __pycache__/
