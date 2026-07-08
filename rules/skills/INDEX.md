@@ -34,6 +34,14 @@
 
 ## 分类索引
 
+### 常用 Skill 速查（以 INDEX.md 为准）
+
+**Coding 任务** → `./bestpractice_coding_standards.md`
+- 编码前思考 → 精准修改 → 目标驱动执行 → 依赖与 Git 纪律
+
+**外部 API / SDK 调试** → `./bestpractice_external_api_debugging.md`
+- 参考实现优先 → 逐字段对比 → 两轮未解就换策略
+
 ### API Guide（API 指南）
 
 调用外部系统或工具的操作手册。
@@ -77,6 +85,7 @@
 
 - [AI 编程核心方法论](./bestpractice_ai_programming_mindset.md) ✅ — 70%问题、成功标准、可验证性
 - [Coding 规范与纪律](./bestpractice_coding_standards.md) ✅ — 编码前思考、简洁优先、精准修改、目标驱动执行、调试纪律
+- [外部 API / 协议 / SDK 调试](./bestpractice_external_api_debugging.md) ✅ — 参考实现优先、逐字段对比、两轮未解就换策略
 - [Skill 写作指南（Meta-Skill）](./bestpractice_skill_writing.md) ✅ — 创建或重写 skill 时使用，强调结果确定性、验收标准和边界条件
 - [API Key 管理与调用](./bestpractice_api_key_management_1password_cli.md) ✅ — 使用 1Password CLI 安全管理密钥
 - [面试评估框架](./bestpractice_interview_evaluation.md) ✅ — Trait > Skill、AI 作弊识别、技术深度探测
