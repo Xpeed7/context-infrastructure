@@ -63,6 +63,7 @@
   - **禁止轮询**：agent 运行期间不要反复调用 `background_output`，系统会自动通知
   - 判断标准：任务可拆分为 ≥2 个子任务，每个 ≥5 tool calls
   - 核心参数：并行度 ≤5，调研 overlap 30-50%，代码 overlap 0-20%
+- [批量图片分类与归档工作流](./workflow_batch_image_classification.md) ✅ — 大量照片/扫描件（票据、病历、证件）按类别识别并整理到分类文件夹：压缩降 token、查重、子代理分批识别、分类规则须含冲突裁决原则
 - [深度调研工作流](./workflow_deep_research_survey.md) ✅ — 多 Agent 并行 + 交叉验证（Phase 1-3 信息采集）
 - [分析写作工作流](./workflow_analytical_writing.md) ✅ — 将调研素材转化为有判断力的分析文章。包含 Thesis Catalog（核心分析视角 L1-L6）和判断合成步骤。**做深度调研并写 external 文章时，两个 skill 都要读**
 - [个人文风改写工作流](./workflow_rewrite_in_my_style.md) ✅ — 把中文草稿改写成用户自己的写作口吻，保留立场并显式报告删改与逻辑问题
