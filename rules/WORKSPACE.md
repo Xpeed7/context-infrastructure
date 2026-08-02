@@ -33,3 +33,4 @@
 <!-- 随着你的项目增长，在这里添加活跃项目的快捷路由 -->
 <!-- 格式：- `project-name` → `adhoc_jobs/project_name/` (说明) -->
 - `playwright_demo` → `adhoc_jobs/playwright_demo/` (playwright-cli + spec-kit 驱动的 TodoMVC 测试演示，spec-driven testing 样板，12 场景全绿，独立 git)
+- `muyun_homepage` → `adhoc_jobs/muyun_homepage/` (个人主页，镜像自 stormzhang.ai 静态站，已改名 muyun，待替换个人内容)
