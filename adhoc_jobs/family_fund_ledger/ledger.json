@@ -1,0 +1,38 @@
+{
+  "currency": "CNY",
+  "opening_balance": 36000,
+  "entries": [
+    {
+      "id": "entry-001",
+      "date": "2026-07",
+      "date_precision": "month",
+      "person": "牛牛",
+      "item": "成都学舞",
+      "amount": 1850
+    },
+    {
+      "id": "entry-002",
+      "date": "2026-08-25",
+      "date_precision": "day",
+      "person": "牛牛",
+      "item": "重疾险",
+      "amount": 3260
+    },
+    {
+      "id": "entry-003",
+      "date": "2026-08-25",
+      "date_precision": "day",
+      "person": "桐桐",
+      "item": "重疾险",
+      "amount": 3270
+    },
+    {
+      "id": "entry-004",
+      "date": "2026-09-05",
+      "date_precision": "day",
+      "person": "牛牛",
+      "item": "深圳学舞",
+      "amount": 7899
+    }
+  ]
+}

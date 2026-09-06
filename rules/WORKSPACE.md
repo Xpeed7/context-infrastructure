@@ -12,6 +12,7 @@
 ### 知识与记录
 - 通用调研报告：`contexts/survey_sessions/`
 - 思考 / 复盘 / 方法论：`contexts/thought_review/`
+- 可复用 Prompt 模板：`contexts/prompts/`
 - 公众号 / 博客文章创作（每篇一目录）：`contexts/writing/`（素材引用 `survey_sessions`，不复制）
 - 每日日志：`contexts/daily_records/`
 
@@ -34,3 +35,4 @@
 <!-- 格式：- `project-name` → `adhoc_jobs/project_name/` (说明) -->
 - `playwright_demo` → `adhoc_jobs/playwright_demo/` (playwright-cli + spec-kit 驱动的 TodoMVC 测试演示，spec-driven testing 样板，12 场景全绿，独立 git)
 - `muyun_homepage` → `adhoc_jobs/muyun_homepage/` (个人主页，镜像自 stormzhang.ai 静态站，已改名 muyun，待替换个人内容)
+- `stormzhang 文章收录` → `/Users/chenruiyan/2026-project/stormzhang/articles/` (stormzhang 教程/思考/prompt 收录库，收录规范见该目录 README.md)
