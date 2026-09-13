@@ -33,6 +33,23 @@
       "person": "牛牛",
       "item": "深圳学舞",
       "amount": 7899
+    },
+    {
+      "id": "entry-005",
+      "date": "2026-09-07",
+      "date_precision": "day",
+      "person": "牛牛",
+      "item": "乒乓球",
+      "amount": 3920
+    },
+    {
+      "id": "entry-006",
+      "date": "2026-09-13",
+      "date_precision": "day",
+      "person": "小金库",
+      "item": "新增收入",
+      "amount": 6000,
+      "type": "income"
     }
   ]
 }

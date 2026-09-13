@@ -15,6 +15,7 @@
 - 可复用 Prompt 模板：`contexts/prompts/`
 - 公众号 / 博客文章创作（每篇一目录）：`contexts/writing/`（素材引用 `survey_sessions`，不复制）
 - 每日日志：`contexts/daily_records/`
+- 个人学习计划与进度：`contexts/learning_plans/`（Superlinear 三个月课程计划：`superlinear_2026/`）
 
 ### 系统与规则
 - 可复用技术方案 / Skill：`rules/skills/`
