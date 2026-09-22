@@ -51,7 +51,7 @@
 ## When to Use
 什么情况下触发这个 skill
 
-## Prerequisites  
+## Prerequisites
 需要什么工具/配置
 
 ## 步骤
@@ -66,7 +66,7 @@
 
 ### 2c. 安装外部 public skill repo
 
-`rules/skills/` 里的内容是 starter set，不需要把所有能力都复制进来。需要更完整的能力时，先看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列出了一组独立维护的 public skill repo，例如 Tavily、Google Docs、Outlook、Resend、OpenCode、Process Launcher、PPTX、Typefully 和 Stripe。
+`rules/skills/` 里的内容是 starter set，不需要把所有能力都复制进来。需要更完整的能力时，先看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列出了一组独立维护的 public skill repo，例如 Tavily、Google Docs、Google Maps、Outlook、Resend、OpenCode、Process Launcher、PPTX、Typefully 和 Stripe。
 
 安装时，把目标 repo URL 交给你的 AI agent，让它从当前 workspace 的 `AGENTS.md` / `WORKSPACE.md` 出发，只暴露一个 root skill。通用技术 contract 留在 public repo；联系人 alias、本地路径、endpoint、token 和业务上下文留在本地 overlay。
 
@@ -134,21 +134,21 @@ python3 periodic_jobs/ai_heartbeat/src/v0/observer.py 2024-01-15
 
 当你的 `contexts/` 目录积累了足够多内容后，语义搜索让你能按意思而非关键词检索历史记录。
 
-**需要**：LLM Studio（本地）或 OpenAI API key  
-**配置**：参见 `rules/skills/semantic_search.md`
+**需要**：任意 OpenAI-compatible embedding endpoint（本地或云端）
+**配置**：安装 ecosystem [semantic-search-skill](https://github.com/grapeot/semantic-search-skill)
 
 ### 分享报告到 Web（⚙️）
 
 将调研报告转为 HTML 并发布到你自己的服务器。
 
-**需要**：一台有 SSH 访问权限的服务器  
+**需要**：一台有 SSH 访问权限的服务器
 **配置**：参见 `rules/skills/share_report.md`，替换 `<your-domain>` 和 `<your-server>`
 
 ### 发送邮件通知（⚙️）
 
 让 AI 完成任务后发邮件通知你。
 
-**需要**：Gmail App Password  
+**需要**：Gmail App Password
 **配置**：参见 `rules/skills/send_email.md`
 
 ---
@@ -167,16 +167,16 @@ python3 periodic_jobs/ai_heartbeat/src/v0/observer.py 2024-01-15
 
 ## 常见问题
 
-**Q：axioms 能直接用吗？**  
+**Q：axioms 能直接用吗？**
 A：可以用来理解系统的结构，但核心内容代表原作者的视角。你的 axioms 需要从你自己的经历中提炼。参考 `rules/skills/workflow_cognitive_profile_extraction.md` 了解提炼方法。
 
-**Q：skills 能直接用吗？**  
+**Q：skills 能直接用吗？**
 A：✅ 标记的可以直接用。⚙️ 标记的需要替换配置（endpoint、API key、域名等）。BestPractice 类基本都可以直接用。更完整的工具型能力放在独立 public repo 里，见 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。
 
-**Q：observer.py 需要什么依赖？**  
+**Q：observer.py 需要什么依赖？**
 A：依赖 `opencode_client.py`（OpenCode Server 的客户端封装）。这部分需要你根据自己使用的 AI agent 框架来实现或适配。
 
-**Q：能用其他 AI agent（不用 OpenCode）吗？**  
+**Q：能用其他 AI agent（不用 OpenCode）吗？**
 A：可以。`observer.py` 的核心逻辑是构造 prompt 并调用 AI；你可以替换 `opencode_client` 为 Claude API、OpenAI API 或任何支持长对话的 AI 接口。
 
 ---

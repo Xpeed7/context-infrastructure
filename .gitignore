@@ -1,6 +1,7 @@
 # Secrets — never commit real values
 .env
-.env.local
+.env.*
+!.env.example
 *.json.gacl
 ga4-service-account.json
 
@@ -15,6 +16,10 @@ adhoc_jobs/email_to_cto/
 .venv/
 __pycache__/
 *.pyc
+.pytest_cache/
+
+# Logs
+*.log
 
 # OS / editor
 .DS_Store

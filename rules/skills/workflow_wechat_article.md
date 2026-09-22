@@ -60,7 +60,7 @@ contexts/writing/<slug>_<YYYYMMDD>/
 ## 可用资源
 
 - 深度调研：[`workflow_deep_research_survey.md`](./workflow_deep_research_survey.md)
-- 分析写作：[`workflow_analytical_writing.md`](./workflow_analytical_writing.md)（Thesis Catalog L1-L6）
+- 分析写作：`/Users/chenruiyan/2026-project/writing-skill/skills/workflow_external_writing.md`（Thesis Catalog L1-L8，见同目录 `reference_writing_thesis_catalog.md`；原 `workflow_analytical_writing.md` 已迁移至 writing-skill）
 - 文风改写：[`workflow_rewrite_in_my_style.md`](./workflow_rewrite_in_my_style.md)
 - 配图：[`workflow_guizang_social_card.md`](./workflow_guizang_social_card.md)
 - 写作约束：`rules/COMMUNICATION.md`
@@ -82,7 +82,7 @@ contexts/writing/<slug>_<YYYYMMDD>/
 选题明确后，按文章复杂度决定走哪些 skill。**不是每篇都要全走**：
 
 - 需要事实核查 / 深度调研 → `workflow_deep_research_survey.md`，产出落 `survey_sessions/`，在 `meta.md` 引用
-- 有调研素材，需要从"事实"走到"判断" → `workflow_analytical_writing.md`，产出落 `scratchpad.md`
+- 有调研素材，需要从"事实"走到"判断" → `/Users/chenruiyan/2026-project/writing-skill/skills/workflow_external_writing.md`，产出落 `scratchpad.md`
 - 草稿已成，需要统一成作者本人文风 → `workflow_rewrite_in_my_style.md`，产出落 `final.md`
 - 需要封面或社媒配图 → `workflow_guizang_social_card.md`，产出入 `assets/`
 

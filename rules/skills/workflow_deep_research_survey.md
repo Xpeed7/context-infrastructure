@@ -6,7 +6,7 @@
 - **适用场景**: 需要对某个主题进行深度、全面、可验证的第三方调研
 - **输出位置**: `contexts/survey_sessions/`
 - **创建日期**: 2026-02-19
-- **最后更新**: 2026-03-30
+- **最后更新**: 2026-06-07
 
 ## 核心原则
 
@@ -129,19 +129,16 @@ External mode 选定后，还需要回答一个更根本的问题：**这件事�
 
 **启动 Sub-agent**:
 
-同时启动 3-5 个 sub-agent，每个负责一个维度。使用以下类型：
+同时启动 3-5 个 sub-agent，每个负责一个维度。使用 `multi_tool_use.parallel` 包多个 `functions.task` 调用，具体调用方式见 `workflow_parallel_subagents.md`。默认用 `general`；低成本初筛可用 `cheap_glm`；高隐私材料用 `private_ds4`；需要 zero-data-retention 云模型时按任务强度选择 `ollama_kimi` 或 `ollama_deepseek_pro`；复杂判断或最终 QA 用 `reasoning_gpt`。
 
-- `librarian` — 外部调研首选，查文档、开源代码、官方资料
-- `deep` category — 自主深度调研，适合复杂多源任务
-
-```
-task(
-  subagent_type="librarian",
-  load_skills=[],
-  description="调研 XX 维度",
-  run_in_background=true,
-  prompt="[具体调研维度的 prompt]"
-)
+```json
+{
+  "description": "调研 XX 维度",
+  "subagent_type": "general",
+  "prompt": "[具体调研维度的 prompt]",
+  "task_id": "",
+  "command": ""
+}
 ```
 
 每个 sub-agent 的 prompt 中明确：
@@ -175,29 +172,51 @@ task(
    - Tier 3-4 源出现与 Tier 1-2 矛盾的证据 → 以 Tier 3-4 为准，记录矛盾点
 3. 如发现重大矛盾，可再启动 sub-agent 针对性验证。
 
+### Phase 3.3: 溯源与事实核查
+
+**目标**：在观点 brainstorm 之前逐源回查支撑核心 thesis 的关键证据，排除 sub-agent 误读、幻觉和选择性引用。除纯事实汇总外，默认执行。
+
+1. 提取 5-10 个关键参考源：直接支撑或反驳论点的来源、看似矛盾的来源、含关键数据的来源和可信度存疑的来源。
+2. 用 Tavily extract 重新读取原始内容，核查转述、限定条件、URL 和数字精度。不能用 sub-agent 的总结验证另一份 sub-agent 总结。
+3. 写入 `tmp/<session_slug>/fact_check.md`。每项记录来源、当前转述、核查结论（`一致`、`部分偏差`、`hallucination`）和原始摘录。
+4. 把误读标入 scratchpad。brainstorm 只使用修正后的事实；核心来源被证伪时先补调研。
+
+### Phase 3.5: Brainstorm 与补调研决策
+
+**目标**：事实核查完成后，通过独立视角暴露 thesis、反方和信息缺口。external-facing 文章、观点型调研和需要形成 thesis 的任务默认执行；纯事实汇总可以跳过。
+
+1. 主线程整理 `tmp/<session_slug>/brainstorm_brief.md`：初始 thesis、已验证事实、不确定 claim、反例、目标读者和写作约束。
+2. 并行调用不同能力路线的 agent，并分配明确角色，例如证据怀疑者、目标读者、产品决策者。每个 agent 回答：当前 thesis 的最强版本、最脆弱前提、需要补查的 3-5 个问题、哪些证据会改变结论。
+3. 整合为 `tmp/<session_slug>/brainstorm_synthesis.md`，列出 thesis 候选、必须补查的问题和验证通道。
+4. 启动一轮范围窄于 Phase 2 的补调研，只验证最脆弱前提和反例。新增来源追加到 `source_index.md`。
+
+Brainstorm 不是标题润色，也不是多 agent 泛泛复述。它必须转化为补调研或明确的判断收敛。
+
 ### Phase 4: 写作
 
 调研的 Phase 1-3 完成后，进入写作阶段。根据目标产出类型选择路径：
 
-**如果是 external-facing 分析文章** → 加载 `workflow_analytical_writing.md`，从 Phase A 开始执行。该 skill 包含作者的分析视角目录（Thesis Catalog）、判断合成步骤（视角匹配 → 族谱追溯 → 叙事重构 → thesis 成型）和写作规范。
+**External-facing 分析文章** → 进入 [外部写作工作流](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md)，先完成其中的 thesis-and-outline 方案选择与 article warrant 检查。Main Agent 随后建立 source contract、writing brief、audience contract、voice contract 和 prose-neutral content map；再按 [Antigravity CLI 文件式调用](./antigravity_cli.md) 双生成异质 prose 候选、单审查选优。验收走看不到 contract 的分离冷读（style blind read + cognitive walkthrough + 校准 voice comparison），必要时只允许一次 fresh AGY 返工，最后由一道机器阻断"完成"的终端陌生读者冷读一票放行，再做有记录的 surgical 修复。
 
-**如果是 internal memo**（面向自己或共享上下文的协作者）→ 不需要完整的分析写作流程。直接写：先把最影响决策的结论和依据显出来，把仍未确认的点与下一步动作留清楚。动笔前读一遍 `rules/COMMUNICATION.md`。
+**Internal memo**（面向用户本人或共享上下文的协作者）→ 加载 [内部写作工作流](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_internal_writing.md)。先呈现最影响决策的结论和依据，并保留未确认点与下一步动作。动笔前读取 `../COMMUNICATION.md`。
 
 **共享格式要求**（两种 mode 通用）:
 - 中文 Markdown
-- 所有引用必须有 URL（Markdown 链接格式），且必须使用**绝对链接**（以 `https://` 开头）。相对链接在 yage.ai 上可工作，但发布到 Circle 等第三方平台时会指向错误地址
+- 所有外部引用必须使用以 `https://` 开头的绝对 URL，避免更换发布环境后失效
 - 关键引用保留原文摘录，不只是总结
 - 如果最终交付是 external article，重要来源直接进入正文的 inline Markdown links，不只堆在文末
 
-**Survey report 与博客文章的区别**：本 workflow 的产出是 survey report，存放在 `contexts/survey_sessions/`。不是博客文章。不要加博客 frontmatter 或 Kit 订阅 script tag。如果用户要求发布到博客，单独复制到 `contexts/blog/content/` 并加 frontmatter，这是独立步骤。
+**Survey report 与博客文章的区别**：本 workflow 的产出是 survey report，存放在 `contexts/survey_sessions/`。不要默认添加博客 frontmatter、订阅组件或渠道专用 metadata。用户明确要求博客时，再按目标项目的博客格式处理。
 
-**交付终点**：写完 `contexts/survey_sessions/` 下的最终 MD 文件即为调研交付的终点。不要自动继续执行发布流程（yage share、博客、Twitter、Circle 等）。只有当用户显式要求发布时，才按对应的 skill 流程执行后续步骤。
+**交付终点**：写完 `contexts/survey_sessions/` 下的最终 MD 文件即为调研交付终点。不要自动发布到 blog、Twitter、Circle 或其他渠道；发布需要用户对当次动作作出显式指令。
 
 **存储位置**: `contexts/survey_sessions/<topic>_survey_YYYYMMDD.md`
 
 **推荐 artifact 目录** `tmp/<session_slug>/`，至少包含：
 - `scratchpad.md`（含 claim extraction 表格）
 - `search_manifest.md`（含产出文件索引表、subagent 定位方式、数据覆盖评估）
+- `fact_check.md`（Phase 3.3 的逐源事实核查）
+- `brainstorm_brief.md`、`brainstorm_synthesis.md`（观点型或 external-facing 任务）
 - `search_notes.md`（按需）
 - `source_index.md`（按需）
 
@@ -260,7 +279,7 @@ task(
 | 维度划分太干净没有 overlap | 设计维度时故意让边缘模糊 |
 | Sub-agent 返回信息太浅 | prompt 中强调"深度"、"具体"、"原文" |
 | 中间文件堆积 | 集中到 `tmp/<session_slug>/`，只保留关键索引和判断 |
-| 用错 subagent 类型 | 外部调研用 `librarian` 或 `deep`，`explore` 只用于内部 codebase |
+| 用错 subagent 类型 | `subagent_type` 必须是当前已注册 agent 名；外部调研默认 `general`，代码库探索用 `explore`，隐私敏感用 `private_ds4` 或 Ollama Cloud 路线 |
 | 调研结果变成 vendor marketing 汇总 | Phase 1 提取 claim，Phase 2 按证据功能分配维度，Phase 3 核查验证状态 |
 
-写作阶段的常见失败模式（Relevance 不着地、Demo 当证据、时间维度模糊、调研汇总而非作者写作等）见 `workflow_analytical_writing.md` 的失败模式表。
+写作阶段的 reader takeaway、article warrant、source contract 与成稿验收要求见 [writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md)。

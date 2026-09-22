@@ -117,7 +117,7 @@
 
 - 总体写作约束：`rules/COMMUNICATION.md`
 - skill 设计原则：`rules/skills/bestpractice_skill_writing.md`
-- 如任务是外部分析文章，可结合：`rules/skills/workflow_analytical_writing.md`
+- 如任务是外部分析文章，可结合：`/Users/chenruiyan/2026-project/writing-skill/skills/workflow_external_writing.md`（分析视角见同目录 `reference_writing_thesis_catalog.md`；原 `workflow_analytical_writing.md` 已迁移至 writing-skill）
 
 ## 方法论建议
 

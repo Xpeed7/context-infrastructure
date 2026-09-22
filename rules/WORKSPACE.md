@@ -16,6 +16,7 @@
 - 公众号 / 博客文章创作（每篇一目录）：`contexts/writing/`（素材引用 `survey_sessions`，不复制）
 - 每日日志：`contexts/daily_records/`
 - 个人学习计划与进度：`contexts/learning_plans/`（Superlinear 三个月课程计划：`superlinear_2026/`）
+- AI 会话归档：`contexts/ai_sessions/<source>/`（使用 ai_session_export 生成；搜索流程见 `rules/skills/ai_session_search_archive.md`）
 
 ### 系统与规则
 - 可复用技术方案 / Skill：`rules/skills/`
@@ -37,3 +38,4 @@
 - `playwright_demo` → `adhoc_jobs/playwright_demo/` (playwright-cli + spec-kit 驱动的 TodoMVC 测试演示，spec-driven testing 样板，12 场景全绿，独立 git)
 - `muyun_homepage` → `adhoc_jobs/muyun_homepage/` (个人主页，镜像自 stormzhang.ai 静态站，已改名 muyun，待替换个人内容)
 - `stormzhang 文章收录` → `/Users/chenruiyan/2026-project/stormzhang/articles/` (stormzhang 教程/思考/prompt 收录库，收录规范见该目录 README.md)
+- `writing-skill` → `/Users/chenruiyan/2026-project/writing-skill/` (grapeot 公开写作工作流 repo：内部/外部写作工作流、prose lint CLI、thesis catalog；本仓库已迁移的分析/外部写作 skill 内容在此)
