@@ -65,7 +65,7 @@
 - [Workflow Watchdog](./workflow_watchdog.md) — 后台派出 workflow 或 agent 任务后设置 ~30 分钟定时巡检，识别正常运行与死循环挂起。触发词："watchdog"、"workflow 卡住"、"后台任务巡检"
 - [批量图片分类与归档工作流](./workflow_batch_image_classification.md) ✅ — 大量照片/扫描件（票据、病历、证件）按类别识别并整理到分类文件夹：压缩降 token、查重、子代理分批识别、分类规则须含冲突裁决原则
 - [深度调研工作流](./workflow_deep_research_survey.md) ✅ — 基于多 Agent 并行检索与交叉验证的深度信息采集流程（Phase 1-3）
-- [分析写作工作流](./workflow_analytical_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md)（分析视角见 [thesis catalog](https://github.com/grapeot/writing-skill/blob/master/skills/reference_writing_thesis_catalog.md)）— 将调研素材转化为有判断力的分析文章。**做深度调研并写 external 文章时，两个 skill 都要读**
+- 分析写作工作流 → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md)（分析视角见 [thesis catalog](https://github.com/grapeot/writing-skill/blob/master/skills/reference_writing_thesis_catalog.md)）— 将调研素材转化为有判断力的分析文章。**做深度调研并写 external 文章时，两个 skill 都要读**
 - [个人文风改写工作流](./workflow_rewrite_in_my_style.md) ✅ — 把中文草稿改写成用户自己的写作口吻，保留立场并显式报告删改与逻辑问题
 - [公众号写作风格卡](./wechat_writing_style_card.md) ✅ — 作者本人的公众号写作风格约束（先亮观点、话题块推进、自嘲不端着、抽象后落具体细节），写初稿或改写时与 `workflow_rewrite_in_my_style.md` 配合使用
 - [公众号文章创作工作流](./workflow_wechat_article.md) ✅ — 单篇文章的端到端容器：选题→调研→分析→改写→配图，每篇一个目录，素材引用 survey_sessions 不复制
@@ -75,7 +75,7 @@
 - [外部写作工作流](./workflow_external_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md) — 对外深度技术分析文章写作流程；包含双生成单审查、分离冷读验收与终端冷读一票放行
 - [External Prose Lint CLI](./external_prose_lint.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/external_prose_lint.md) — 基于规则的确定性中文 prose 扫描工具；命令：`python -m writing_skill.external_prose_lint_cli <md>`
 - [内部写作工作流](./workflow_internal_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_internal_writing.md) — 内部文档写作；结论前置、概念依序出场、可验证性
-- [AI 生成 Slide Deck 工作流](./workflow_presentation_slides.md) → 已迁移到 [grapeot/presentation_skill](https://github.com/grapeot/presentation_skill) — Gemini 渲染、Clean Ink 风格、8 进程并行、4K 放大前验证；明确不用图像生成时 fallback 到 HTML module deck
+- AI 生成 Slide Deck 工作流 → 已迁移到 [grapeot/presentation_skill](https://github.com/grapeot/presentation_skill) — Gemini 渲染、Clean Ink 风格、8 进程并行、4K 放大前验证；明确不用图像生成时 fallback 到 HTML module deck
 - [认知画像提取工作流](./workflow_cognitive_profile_extraction.md) — 从群聊、Slack、Discord、邮件及播客转录等非结构化对话中提炼可预测的认知公理；要求 Opus 模型亲自完成写作
 - 语义搜索技能 → 见 ecosystem [semantic-search-skill](https://github.com/grapeot/semantic-search-skill)：基于本地文本 embedding 与 cosine 相似度检索，支持任意 OpenAI-compatible endpoint
 - [知识飞轮设计模式](./workflow_knowledge_flywheel.md) — 笨数据 + 笨方法 + 笨模型 = 精知识

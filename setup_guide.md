@@ -148,8 +148,8 @@ python3 periodic_jobs/ai_heartbeat/src/v0/observer.py 2024-01-15
 
 让 AI 完成任务后发邮件通知你。
 
-**需要**：Gmail App Password
-**配置**：参见 `rules/skills/send_email.md`
+**需要**：Gmail App Password（或 Outlook / Resend 替代方案）
+**配置**：`rules/skills/send_email.md` 已迁移，发信能力见 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md) 的 Email 条目（[outlook_skill](https://github.com/grapeot/outlook_skill)、[resend_email_skill](https://github.com/grapeot/resend_email_skill)、[kit-skill](https://github.com/grapeot/kit-skill)）
 
 ---
 
