@@ -1,6 +1,6 @@
 # Setup Guide: Context Infrastructure
 
-本地客户端为 Codex CLI、Kimi CLI、Zcode（GLM），使用范围以 `AGENTS.md` 和 `rules/USER.md` 为准。核心规则与手工记录可直接使用，自动记忆任务仍待适配。
+这是 AI 引导的配置指南。按步骤操作，每步完成后立刻能感受到差异。
 
 ---
 
@@ -66,7 +66,7 @@
 
 ### 2c. 安装外部 public skill repo
 
-`rules/skills/` 里的内容是 starter set，不需要把所有能力都复制进来。需要更完整的能力时，先看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列出了一组独立维护的 public skill repo，例如 Tavily、Google Docs、Google Maps、Outlook、Resend、Process Launcher、PPTX、Typefully 和 Stripe。
+`rules/skills/` 里的内容是 starter set，不需要把所有能力都复制进来。需要更完整的能力时，先看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列出了一组独立维护的 public skill repo，例如 Tavily、Google Docs、Google Maps、Outlook、Resend、OpenCode、Process Launcher、PPTX、Typefully 和 Stripe。
 
 安装时，把目标 repo URL 交给你的 AI agent，让它从当前 workspace 的 `AGENTS.md` / `WORKSPACE.md` 出发，只暴露一个 root skill。通用技术 contract 留在 public repo；联系人 alias、本地路径、endpoint、token 和业务上下文留在本地 overlay。
 
@@ -81,13 +81,48 @@
 
 ---
 
-## Step 3：使用记忆系统（自动任务待适配）
+## Step 3：配置记忆系统（可选，30 分钟）
 
-启动时读取 `AGENTS.md` 列出的核心规则，其他 skill 与公理按任务加载。需要历史经验时，检索 `contexts/memory/OBSERVATIONS.md`。
+**价值**：让 AI 自动积累你的工作经验，越用越懂你。
 
-`periodic_jobs/ai_heartbeat/` 的自动观察和反思脚本仍依赖旧的 OpenCode 客户端封装，尚未适配当前工具。此次整理只修改文档，不改脚本、不启停系统定时任务。
+### 3a. 理解三层架构
 
-现阶段可以由当前会话按任务范围整理观察记录。自动化启用条件见 [定时任务状态](docs/CRONTAB.md)；旧安装步骤已保存在 [历史原版](archives/retired_tooling/2026-09-22/originals/setup_guide.md)。
+```
+L3（全局约束）: rules/ 下所有文件 → 每次 session 被动加载
+L1/L2（动态记忆）: contexts/memory/OBSERVATIONS.md → agent 主动检索
+```
+
+L3 你已经配置好了（Step 1）。L1/L2 需要设置 cron 自动运行。
+
+### 3b. 配置 OpenCode Server
+
+`periodic_jobs/ai_heartbeat/` 的脚本依赖 OpenCode Server API。
+
+1. 确认本地 OpenCode Server 运行（或配置连接）
+2. 在 `periodic_jobs/ai_heartbeat/src/v0/` 检查 `opencode_client.py`（需要你自行补充，源码参考 OpenCode 文档）
+3. 测试连通性：`python3 observer.py --help`
+
+### 3c. 配置 Cron
+
+```bash
+# 每日 8:00 AM 运行 observer（扫描当日变化）
+0 8 * * * cd /path/to/your/workspace && python3 periodic_jobs/ai_heartbeat/src/v0/observer.py >> /tmp/observer.log 2>&1
+
+# 每周一 9:00 AM 运行 reflector（蒸馏和晋升）
+0 9 * * 1 cd /path/to/your/workspace && python3 periodic_jobs/ai_heartbeat/src/v0/reflector.py >> /tmp/reflector.log 2>&1
+```
+
+调整路径和时间为你的实际情况。
+
+### 3d. 验证
+
+运行一次 observer：
+
+```bash
+python3 periodic_jobs/ai_heartbeat/src/v0/observer.py 2024-01-15
+```
+
+查看 `contexts/memory/OBSERVATIONS.md` 是否有新条目写入。
 
 ---
 
@@ -138,8 +173,11 @@ A：可以用来理解系统的结构，但核心内容代表原作者的视角�
 **Q：skills 能直接用吗？**
 A：✅ 标记的可以直接用。⚙️ 标记的需要替换配置（endpoint、API key、域名等）。BestPractice 类基本都可以直接用。更完整的工具型能力放在独立 public repo 里，见 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。
 
-**Q：自动观察和反思现在可以直接运行吗？**
-A：尚未适配 Codex CLI、Kimi CLI、Zcode。需要单独完成调用层适配与验证后再启用，不能仅替换模型名称。当前可先使用规则和手工记忆记录。
+**Q：observer.py 需要什么依赖？**
+A：依赖 `opencode_client.py`（OpenCode Server 的客户端封装）。这部分需要你根据自己使用的 AI agent 框架来实现或适配。
+
+**Q：能用其他 AI agent（不用 OpenCode）吗？**
+A：可以。`observer.py` 的核心逻辑是构造 prompt 并调用 AI；你可以替换 `opencode_client` 为 Claude API、OpenAI API 或任何支持长对话的 AI 接口。
 
 ---
 

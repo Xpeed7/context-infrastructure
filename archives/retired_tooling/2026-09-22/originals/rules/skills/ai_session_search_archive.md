@@ -13,7 +13,16 @@ may all contain sensitive information.
 
 ## Source Routing
 
-Use `contexts/ai_sessions/<source>/` for sources that actually have exported files. Current clients are Codex CLI, Kimi CLI, and Zcode; exporter support for each must be verified before scheduling exports. Do not infer support from a subscription or create empty source directories as evidence of support. Existing historical exports remain searchable when relevant.
+A typical archive has one directory per source:
+
+```text
+contexts/ai_sessions/
+  opencode/
+  claude_code/
+  codex/
+  antigravity/
+  second_mind/
+```
 
 - When the user names a source, search only that directory.
 - When the source is unknown, search every available source directory.
@@ -30,8 +39,8 @@ assuming the user's wording exactly matches the archived title.
 
 ```bash
 rg -i -n --glob '*.md' \
-  'project name|session title|identifier' \
-  contexts/ai_sessions/
+  'Claude Teacher|Claude for Teachers|Anthropic for Teachers' \
+  contexts/ai_sessions/{opencode,claude_code,codex,antigravity,second_mind}/
 ```
 
 Glob searches filenames, not file contents. A truncated glob result is not
@@ -47,7 +56,7 @@ the cache.
 ```bash
 FILELIST="$(mktemp)"
 trap 'rm -f "$FILELIST"' EXIT
-rg --files contexts/ai_sessions/ \
+rg --files contexts/ai_sessions/{opencode,claude_code,codex,antigravity,second_mind}/ \
   -g '*.md' > "$FILELIST"
 
 semantic-search query \
@@ -78,7 +87,15 @@ session is newer than the archive. Delete temporary exports after lookup.
 - Read action ids from frontmatter; never infer them from filenames or text.
 - Do not put credentials, server addresses, local host profiles, absolute
   archive paths, or user queries into action URLs.
-- Return local Markdown file links by default; do not invent client deep links.
+- For OpenCode sessions, the deep link is `[Open in OpenCode](opencode://session/<session_id>)`
+  with the ID taken verbatim from frontmatter. A legal ID (per the public
+  OpenCode iOS Client RFC §4.4, https://github.com/grapeot/opencode_ios_client/blob/main/docs/OpenCode_iOS_Client_RFC.md#L485)
+  requires scheme `opencode`, host `session`, a single path segment, and an ID
+  starting with `ses_` followed by ASCII letters, digits, underscores, or
+  hyphens only. The parser rejects userinfo, port, query, fragment, multi-segment
+  paths, control characters, Unicode, double percent encoding, and overlong
+  IDs. Antigravity / Claude Code / Codex / Second Mind IDs (UUIDs or non-`ses_`
+  prefixes) do not satisfy this contract and cannot produce a deep link.
 
 ## Acceptance Criteria
 

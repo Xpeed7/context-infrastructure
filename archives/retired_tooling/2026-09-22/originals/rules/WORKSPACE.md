@@ -13,8 +13,6 @@
 - 通用调研报告：`contexts/survey_sessions/`
 - 思考 / 复盘 / 方法论：`contexts/thought_review/`
 - 可复用 Prompt 模板：`contexts/prompts/`
-- 外部文章收录（stormzhang 以外的作者）：`contexts/collected_articles/`（跨作者通用，收录规范见该目录 README.md；stormzhang 专属库在工程外，见快速查询）
-- 待整理草稿：`contexts/draft/`（整理入库后待清理的原始稿）
 - 公众号 / 博客文章创作（每篇一目录）：`contexts/writing/`（素材引用 `survey_sessions`，不复制）
 - 每日日志：`contexts/daily_records/`
 - 个人学习计划与进度：`contexts/learning_plans/`（Superlinear 三个月课程计划：`superlinear_2026/`）
@@ -24,7 +22,6 @@
 - 可复用技术方案 / Skill：`rules/skills/`
 - 核心公理（Axioms）：`rules/axioms/`
 - 记忆系统：`contexts/memory/` + `periodic_jobs/ai_heartbeat/`
-- 本工程历史文档与废弃规则：`archives/`；不默认加载或检索。2026-09-22 工具整理记录见 `archives/retired_tooling/2026-09-22/README.md`，改动前原文按原相对路径保存在该目录的 `originals/`。
 
 ## 命名规则
 - 目录和文件名：小写 + 下划线 (snake_case)

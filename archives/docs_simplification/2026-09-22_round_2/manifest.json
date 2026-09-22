@@ -1,0 +1,26 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "4e29c196379e17063c3a33e290d0ae2b9b57607c6f312261a501211a5ab27bed"
+  },
+  {
+    "path": "README.md",
+    "sha256": "92f56240767c9bdef65baa71038a470f691443876165b4776096073465565147"
+  },
+  {
+    "path": "setup_guide.md",
+    "sha256": "708068048e0ded09b26d33d500368f25ebe217e42f78016942ead4d8a8716e61"
+  },
+  {
+    "path": "rules/skills/INDEX.md",
+    "sha256": "e9f406ff33cb78bc668e20f219e5aeb97105ad86feaaa5a5d6d3a56637c6abbd"
+  },
+  {
+    "path": "rules/WORKSPACE.md",
+    "sha256": "00bba36d85e4f20958b476559d9be90e44c4ee13f1a00eea763d9f078656dc59"
+  },
+  {
+    "path": "archives/README.md",
+    "sha256": "dfff4dfbc84b295d343d11f186c804cd321158d2f3e5c94ffe0ee4b364576df8"
+  }
+]

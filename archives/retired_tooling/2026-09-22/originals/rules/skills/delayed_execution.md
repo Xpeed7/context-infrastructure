@@ -10,9 +10,12 @@
 
 ## 推荐路径
 
-已有持久任务管理器时，使用其调度、日志和取消能力；外部能力目录见 [SKILL_ECOSYSTEM](../../docs/SKILL_ECOSYSTEM.md) 中的 `process-launcher`。
+优先安装并使用 ecosystem 里的专用能力：
 
-需要 AI 判断的延时任务，应先验证当前客户端是否支持非交互调用、认证和结果落盘，再接入调度器。未验证时只保存任务说明，不承诺未来自动运行，也不为了延时任务引入停用的客户端。
+- `process-launcher`: durable one-shot schedule、进程日志、取消、重启恢复
+- `opencode_skill`: OpenCode `submit` / `submit --dry-run` / batch submission
+
+对于需要 AI 判断的延时任务，正确组合是：先用 `opencode_skill submit --dry-run` 预检提交链路，再用 `process-launcher` 在未来时间触发真实 `opencode_skill submit`。不要在本 starter skill 里维护私有 OpenCode endpoint、模型、agent 或本地路径。
 
 ## 轻量 Fallback：sleep + nohup
 

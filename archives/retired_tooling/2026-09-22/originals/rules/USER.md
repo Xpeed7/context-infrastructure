@@ -6,13 +6,6 @@ _了解你正在帮助的人。随着互动逐步更新。_
 - **怎么叫：** 主人
 - **时区：** 东八区 (北京时间)
 
-## 当前工具（2026-09-22 用户确认）
-
-- 客户端：Codex CLI、Kimi CLI、Zcode；GLM 通过 Zcode 使用。
-- Coding Plan 订阅：GLM、Kimi、Codex。
-- 完全不使用 Cursor、OpenCode、Gemini、Grok。
-- 工程整理只涉及本工程文档与规则，废弃内容先在 `archives/` 归档。
-
 ## 背景
 
 **核心身份：**
@@ -25,7 +18,7 @@ _了解你正在帮助的人。随着互动逐步更新。_
 **技术兴趣：**
 1. **AI/LLM — 主战场**：深度实践者，不是消费者。大量写作关于：
    - Agentic AI 架构和框架
-   - AI-native 开发范式（Codex CLI、Kimi CLI、Zcode）
+   - AI-native 开发范式（Cursor、Claude Code）
    - 模型能力和边界
    - AI 作为第二大脑和工作流集成
 

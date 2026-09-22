@@ -218,7 +218,7 @@
 
 ## 和其他 skill 的关系
 
-- [外部写作工作流](./workflow_external_writing.md)：按读者与文风要求写作，使用当前可用客户端；不要求额外的 CLI 或固定模型。
-
 - `workflow_deep_research_survey.md`：调研阶段可以复用它的并行搜索和交叉验证流程
+- `workflow_peer_collab_research_writing.md`：如果最终写作交给 Claude Code 执笔，走那个 workflow 的 handoff 流程。注意其中 Phase 3 的调用层级规则：主 agent 通过 subagent 包装 Claude Code 调用，subagent 直接 Bash 调 `claude -p`，不要递归包装。
+- `claude_code.md`：Claude Code 的具体调用方式、防递归约束和 prompt 规范。如果本 workflow 的最终写作需要调用 Claude Code，调用层级和超时设置以 `claude_code.md` 为准。
 - `bestpractice_product_decision_analysis.md`：生态位分析框架借鉴了它的设计空间还原和成本结构定位思路，但针对论文做了适配

@@ -10,25 +10,19 @@
 
 ---
 
-## 当前本地使用范围
-
-使用 Codex CLI、Kimi CLI、Zcode（GLM），已订阅 Codex、Kimi、GLM Coding Plan。现行工作流按这些入口维护，具体工具能力以当前会话为准。
-
-历史工具规则保存在 [`archives/retired_tooling/2026-09-22/`](archives/retired_tooling/2026-09-22/README.md)，不默认加载。自动记忆脚本仍为旧实现，尚未适配当前客户端，见 [`docs/CRONTAB.md`](docs/CRONTAB.md)。
-
 ## Quick Start（5 分钟）
 
 ```bash
 git clone https://github.com/grapeot/context-infrastructure
 cd context-infrastructure
-# 用 Codex CLI / Kimi CLI / Zcode 打开这个目录
+# 用 Claude Code / OpenCode / Cursor 打开这个目录
 ```
 
 然后：打开 [`rules/USER.md`](rules/USER.md)，填写你的基本信息。这是 ROI 最高的一步，完成后 AI 的行为立刻个性化。
 
 详细步骤见 [`setup_guide.md`](setup_guide.md)。
 
-如果你想把它扩展成更完整的工作系统，可以看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列了一组可单独安装的 public skill repo，例如 Web 搜索、Google Docs、Google Maps、邮件/newsletter、PPTX、社交媒体、支付分析、家庭网络分析和本地 process launcher。`context-infrastructure` 保持轻量；完整能力通过独立 repo 按需安装。
+如果你想把它扩展成更完整的工作系统，可以看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列了一组可单独安装的 public skill repo，例如 Web 搜索、Google Docs、Google Maps、邮件/newsletter、OpenCode、PPTX、社交媒体、支付分析、家庭网络分析和本地 process launcher。`context-infrastructure` 保持轻量；完整能力通过独立 repo 按需安装。
 
 ---
 
@@ -41,7 +35,7 @@ context-infrastructure/
 ├── .env.example                 # 环境变量模板
 │
 ├── docs/
-│   ├── CRONTAB.md               # 定时任务适配状态与启用条件
+│   ├── CRONTAB.md               # 定时任务配置指南（时间线 + 示例 crontab）
 │   └── SKILL_ECOSYSTEM.md       # 可单独安装的 public skill repo 目录
 │
 ├── rules/
@@ -51,8 +45,6 @@ context-infrastructure/
 │   ├── WORKSPACE.md             # 目录路由索引
 │   ├── axioms/                  # 43 条决策公理（展示层）
 │   └── skills/                  # 25+ 个可复用 skill（展示层）
-│
-├── archives/                   # 历史文档与规则原版，不默认加载
 │
 ├── contexts/
 │   ├── memory/
@@ -85,7 +77,7 @@ context-infrastructure/
 
 **展示层（可以参考，不能复制）**：[`rules/axioms/`](rules/axioms/) 和 [`rules/skills/`](rules/skills/) 包含了这个系统积累一年的内容。43 条公理是从具体经历中蒸馏出来的，skills 是从真实项目中总结的。这些代表原作者的视角，对你有参考价值，但不能替代你自己积累的认知。
 
-**可复用层（直接用）**：[`rules/SOUL.md`](rules/SOUL.md)、[`rules/USER.md`](rules/USER.md) 是模板，填写即可使用。[`rules/COMMUNICATION.md`](rules/COMMUNICATION.md) 是通用的沟通风格指南，大多数人可以直接采用。[`periodic_jobs/ai_heartbeat/`](periodic_jobs/ai_heartbeat/) 保留记忆系统的旧实现代码，当前客户端尚未适配。适配状态与启用条件见 [`docs/CRONTAB.md`](docs/CRONTAB.md)。
+**可复用层（直接用）**：[`rules/SOUL.md`](rules/SOUL.md)、[`rules/USER.md`](rules/USER.md) 是模板，填写即可使用。[`rules/COMMUNICATION.md`](rules/COMMUNICATION.md) 是通用的沟通风格指南，大多数人可以直接采用。[`periodic_jobs/ai_heartbeat/`](periodic_jobs/ai_heartbeat/) 提供了记忆系统的实现代码。需要配置定时任务时，参考 [`docs/CRONTAB.md`](docs/CRONTAB.md)。
 
 **不可复用层**：公理的具体内容、skill 背后的具体经验。理解它们的结构和形成方式，然后从你自己的数据中积累。
 

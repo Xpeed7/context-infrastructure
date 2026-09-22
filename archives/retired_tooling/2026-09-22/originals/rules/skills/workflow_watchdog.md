@@ -6,12 +6,12 @@
 
 ## 做法
 
-派出任务后，设一个 reasonable 的巡检 wake-up，默认约 30 分钟（1800s）。使用当前运行时可用的状态查询或定时机制；延时执行参考 [延时执行](./delayed_execution.md)。没有后台唤醒能力时不要声称已安排巡检，应在当前任务内检查进展。
+派出任务后，设一个 reasonable 的巡检 wake-up，默认约 30 分钟（1800s）。Claude Code harness 用 `ScheduleWakeup`；其他 harness 用对应的定时机制（如 Process Launcher 的延时执行，见 `rules/skills/process_launcher.md`）。
 
 醒来后检查任务状态，分两种情况处理：
 
 1. **真实在忙**：有新输出、agent 在持续产出。不管它，继续等或再设一次 wake-up。
-2. **鬼打墙卡住**：长时间无进展、同一步骤反复重试。通过当前工具提供的取消机制停止本任务创建的进程或子代理，用已有的部分结果推进，或换方法重做。
+2. **鬼打墙卡住**：长时间无进展、同一步骤反复重试。把它 kill 掉（Claude Code 用 `TaskStop`），用已有的部分结果推进，或换方法重做。
 
 "真忙 vs 卡住"的判断自己做，不用问用户。这和 `rules/SOUL.md` 的自主执行契约一致：巡检和 kill 属于技术编排决策，自己推到底。
 

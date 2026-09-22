@@ -129,15 +129,16 @@ External mode 选定后，还需要回答一个更根本的问题：**这件事�
 
 **启动 Sub-agent**:
 
-按独立维度拆分检索任务，调用方式与并发上限见 [并行 Subagent 工作流](./workflow_parallel_subagents.md)。使用当前会话已授权的工具与模型；缺少子代理能力时串行检索，并注明复核是否独立。
+同时启动 3-5 个 sub-agent，每个负责一个维度。使用 `multi_tool_use.parallel` 包多个 `functions.task` 调用，具体调用方式见 `workflow_parallel_subagents.md`。默认用 `general`；低成本初筛可用 `cheap_glm`；高隐私材料用 `private_ds4`；需要 zero-data-retention 云模型时按任务强度选择 `ollama_kimi` 或 `ollama_deepseek_pro`；复杂判断或最终 QA 用 `reasoning_gpt`。
 
-任务说明示例（按当前工具的参数结构传递）：
-
-```text
-目标：调研指定维度，寻找支持与反驳证据。
-输入：已提取的相关 claim 与来源路径。
-输出：tmp/<session_slug>/<dimension>.md，包含 URL、原文摘录和未确认项。
-验收：区分事实与推断，用中文报告结果。
+```json
+{
+  "description": "调研 XX 维度",
+  "subagent_type": "general",
+  "prompt": "[具体调研维度的 prompt]",
+  "task_id": "",
+  "command": ""
+}
 ```
 
 每个 sub-agent 的 prompt 中明确：
@@ -195,7 +196,7 @@ Brainstorm 不是标题润色，也不是多 agent 泛泛复述。它必须转�
 
 调研的 Phase 1-3 完成后，进入写作阶段。根据目标产出类型选择路径：
 
-**External-facing 分析文章** → 进入 [外部写作工作流](./workflow_external_writing.md)，明确论点、证据、读者和文风要求。通过当前可用客户端生成草稿与复核；保留独立冷读、事实核查和有记录的修订，不依赖固定客户端或模型。最终文本由主线程统一验收。
+**External-facing 分析文章** → 进入 [外部写作工作流](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md)，先完成其中的 thesis-and-outline 方案选择与 article warrant 检查。Main Agent 随后建立 source contract、writing brief、audience contract、voice contract 和 prose-neutral content map；再按 [Antigravity CLI 文件式调用](./antigravity_cli.md) 双生成异质 prose 候选、单审查选优。验收走看不到 contract 的分离冷读（style blind read + cognitive walkthrough + 校准 voice comparison），必要时只允许一次 fresh AGY 返工，最后由一道机器阻断"完成"的终端陌生读者冷读一票放行，再做有记录的 surgical 修复。
 
 **Internal memo**（面向用户本人或共享上下文的协作者）→ 加载 [内部写作工作流](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_internal_writing.md)。先呈现最影响决策的结论和依据，并保留未确认点与下一步动作。动笔前读取 `../COMMUNICATION.md`。
 
@@ -278,7 +279,7 @@ Brainstorm 不是标题润色，也不是多 agent 泛泛复述。它必须转�
 | 维度划分太干净没有 overlap | 设计维度时故意让边缘模糊 |
 | Sub-agent 返回信息太浅 | prompt 中强调"深度"、"具体"、"原文" |
 | 中间文件堆积 | 集中到 `tmp/<session_slug>/`，只保留关键索引和判断 |
-| 用错子代理接口 | 只使用当前运行时暴露的工具、参数和 agent；缺少能力时串行，不编造路由 |
+| 用错 subagent 类型 | `subagent_type` 必须是当前已注册 agent 名；外部调研默认 `general`，代码库探索用 `explore`，隐私敏感用 `private_ds4` 或 Ollama Cloud 路线 |
 | 调研结果变成 vendor marketing 汇总 | Phase 1 提取 claim，Phase 2 按证据功能分配维度，Phase 3 核查验证状态 |
 
 写作阶段的 reader takeaway、article warrant、source contract 与成稿验收要求见 [writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md)。

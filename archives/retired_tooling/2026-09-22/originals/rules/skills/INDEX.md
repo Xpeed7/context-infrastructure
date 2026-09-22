@@ -1,7 +1,5 @@
 # Skills Index
 
-当前客户端：Codex CLI、Kimi CLI、Zcode（GLM）。历史工具说明见 [归档记录](../../archives/retired_tooling/2026-09-22/README.md)，不作为默认工作流加载。
-
 本索引只做路由：告诉你「什么时候该看哪个 skill」，不教你怎么调。命中后先读对应 skill 文件再动手。
 
 - **要用某个能力** → 按下方分类定位到 skill 文件，然后**读它**
@@ -10,7 +8,7 @@
 
 ## Multi-Agent 能力提示
 
-子代理能力以当前客户端实际提供的工具为准。不要默认使用，但遇到大型、可并行、调研重、代码库探索重、需要独立交叉验证的任务时，应先读 [并行 Subagent 工作流](./workflow_parallel_subagents.md)。
+当前 harness 支持通过 `multi_tool_use.parallel` 并行派发多个 `functions.task` subagent。不要默认使用，但遇到大型、可并行、调研重、代码库探索重、需要独立交叉验证的任务时，应先读 [并行 Subagent 工作流](./workflow_parallel_subagents.md)。
 
 快速判断：subagent 适合并行读、独立探索、反方审稿、事实核查和上下文窗口隔离；不适合单点小任务、强顺序依赖任务，以及多个 agent 同时写同一份状态或同一批文件。
 
@@ -21,15 +19,15 @@
 ### Tier 1: 核心（clone 后即可开始）
 - ✅ Rules 框架（SOUL/USER/COMMUNICATION/WORKSPACE）— 填写即用
 - ✅ Skills 框架（本目录）— 填写即用
-- ⚙️ 三层记忆系统 — 规则与手工记录可用；自动脚本待适配，见 `docs/CRONTAB.md`
+- ✅ 三层记忆系统 — 需配置 OpenCode + cron
 
 ### Tier 2: 扩展（需要额外配置）
 - ⚙️ Semantic Search — 需要 LLM Studio 或 OpenAI API
 - ⚙️ Share Report — 需要 SSH 服务器或 GitHub Pages
-- ⚙️ Delayed Execution — starter fallback；持久或 AI 延时任务需验证当前客户端与调度器的集成
+- ⚙️ Delayed Execution — starter fallback；durable/AI 延时任务安装 Process Launcher + OpenCode Skill
 
 ### Tier 3: 独立 public skill repos（按需安装）
-- 🔧 AI Session Export、ChatGPT/Codex OAuth、AI Agent CLI、图片生成、Tavily、Google Docs、Google Maps、Outlook、Resend、Process Launcher、PPTX、Typefully、Circle Post、Stripe、Firewalla、Smart Home 等能力见 [`docs/SKILL_ECOSYSTEM.md`](../../docs/SKILL_ECOSYSTEM.md)
+- 🔧 AI Session Export、ChatGPT/Codex OAuth、AI Agent CLI、图片生成、Tavily、Google Docs、Google Maps、Outlook、Resend、OpenCode、Process Launcher、PPTX、Typefully、Circle Post、Stripe、Firewalla、Smart Home 等能力见 [`docs/SKILL_ECOSYSTEM.md`](../../docs/SKILL_ECOSYSTEM.md)
 
 ### 说明
 ✅ = 最多 15 分钟即可使用
@@ -52,7 +50,7 @@
 
 调用外部系统或工具的操作手册。
 
-- [AI CLI Agent 实用指南](https://github.com/grapeot/ai-agent-cli-skill) → 已迁移到独立 public repo；仅按实际需要选用 Codex 相关内容；Kimi CLI、Zcode 支持需另行核验
+- [AI CLI Agent 实用指南](https://github.com/grapeot/ai-agent-cli-skill) → 已迁移到独立 public repo；按需安装 Claude Code / Codex / OpenCode / Antigravity / Grok 等 CLI 支持
 - [OpenReview API](./openreview.md) — 检索 AI 学术会议论文 metadata 与作者 profile（含 institution history、position、tilde ID）。触发词："OpenReview"、"查作者 profile"、"ICLR papers"、"NeurIPS papers"、"tilde ID"
 - [GitHub Actions → Koyeb 部署指南](./deployment_github_actions_koyeb.md) — 测试通过后通过 GitHub Actions 自动部署至 Koyeb；适用于各类 Docker 化应用
 - [使用 Apple 官方命令行工具发布 App Store Connect](./deployment_app_store_connect_cli.md) ✅ — 用稳定版 Xcode 完成 iOS archive、distribution export、IPA metadata 核验与授权后的上传；覆盖云托管 distribution 签名、profile 证书轮换与上传故障诊断
@@ -63,7 +61,7 @@
 
 特定任务的完整工作流程。
 
-- [并行 Subagent 工作流](./workflow_parallel_subagents.md) ✅ — 通用任务拆分、文件交接与验收；调用机制以当前客户端为准
+- [并行 Subagent 工作流](./workflow_parallel_subagents.md) ✅ — 并行调度多个 `functions.task` subagent 的执行机制；首次使用前必读，任务必须打包在单条消息内同时发起
 - [Workflow Watchdog](./workflow_watchdog.md) — 后台派出 workflow 或 agent 任务后设置 ~30 分钟定时巡检，识别正常运行与死循环挂起。触发词："watchdog"、"workflow 卡住"、"后台任务巡检"
 - [批量图片分类与归档工作流](./workflow_batch_image_classification.md) ✅ — 大量照片/扫描件（票据、病历、证件）按类别识别并整理到分类文件夹：压缩降 token、查重、子代理分批识别、分类规则须含冲突裁决原则
 - [深度调研工作流](./workflow_deep_research_survey.md) ✅ — 基于多 Agent 并行检索与交叉验证的深度信息采集流程（Phase 1-3）
@@ -77,13 +75,14 @@
 - [外部写作工作流](./workflow_external_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md) — 对外深度技术分析文章写作流程；包含双生成单审查、分离冷读验收与终端冷读一票放行
 - [External Prose Lint CLI](./external_prose_lint.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/external_prose_lint.md) — 基于规则的确定性中文 prose 扫描工具；命令：`python -m writing_skill.external_prose_lint_cli <md>`
 - [内部写作工作流](./workflow_internal_writing.md) → 已迁移到 [grapeot/writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_internal_writing.md) — 内部文档写作；结论前置、概念依序出场、可验证性
-- [认知画像提取工作流](./workflow_cognitive_profile_extraction.md) — 从群聊、Slack、Discord、邮件及播客转录等非结构化对话中提炼可预测的认知公理；主线程完成最终写作与质量把关
+- AI 生成 Slide Deck 工作流 → 已迁移到 [grapeot/presentation_skill](https://github.com/grapeot/presentation_skill) — Gemini 渲染、Clean Ink 风格、8 进程并行、4K 放大前验证；明确不用图像生成时 fallback 到 HTML module deck
+- [认知画像提取工作流](./workflow_cognitive_profile_extraction.md) — 从群聊、Slack、Discord、邮件及播客转录等非结构化对话中提炼可预测的认知公理；要求 Opus 模型亲自完成写作
 - 语义搜索技能 → 见 ecosystem [semantic-search-skill](https://github.com/grapeot/semantic-search-skill)：基于本地文本 embedding 与 cosine 相似度检索，支持任意 OpenAI-compatible endpoint
 - [知识飞轮设计模式](./workflow_knowledge_flywheel.md) — 笨数据 + 笨方法 + 笨模型 = 精知识
 - [视频下载与语音识别工作流（Qwen ASR 优先）](./workflow_bilibili_whisper_transcription.md) — Bilibili/YouTube 音视频下载与语音识别处理流程
-- [延时执行技能](./delayed_execution.md) ⚙️ — `sleep + nohup` 低风险 fallback；持久或 AI 延时任务按当前客户端能力接入调度器
+- [延时执行技能](./delayed_execution.md) ⚙️ — `sleep + nohup` 低风险 fallback；durable 或 AI 延时任务见 ecosystem 的 Process Launcher + OpenCode Skill
 - [项目脚手架与重整](./project_scaffold.md) ✅ — 把散落文件升级为规范工程目录并初始化独立 Git 仓库
-- [AI Session Search & Archive](./ai_session_search_archive.md) — 在实际已有的 Markdown 会话归档中按来源检索；各客户端导出能力需单独验证
+- [AI Session Search & Archive](./ai_session_search_archive.md) — 在 OpenCode、Claude Code、Codex、Antigravity 与 Second Mind 的统一 Markdown 归档中按来源检索历史会话
 - [iOS UI 自动化测试工作流](./ios_ui_automation.md) — 基于 Xcode 模拟器、XCTest 与 simctl 的 iOS 界面及功能自动化验证
 
 ### BestPractice（最佳实践）

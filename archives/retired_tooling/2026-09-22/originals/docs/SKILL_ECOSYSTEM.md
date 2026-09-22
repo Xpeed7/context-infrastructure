@@ -17,11 +17,7 @@ Start from my workspace AGENTS.md or CLAUDE.md. Follow any WORKSPACE.md or skill
 
 安装完成后，workspace 通常会形成两层：public repo 负责通用技术 contract，本地 `rules/skills/` 或 `.env` 负责私有配置。例如 iMessage public repo 只提供 send-only CLI，本地 overlay 才保存联系人 alias；Stripe public repo 只提供只读分析 contract，本地 overlay 才保存具体业务归因。
 
-## 按需参考的 public skill repos
-
-当前使用 Codex CLI、Kimi CLI、Zcode（GLM）。下表是既有外部资料目录，不代表已安装或已验证可用；安装前核对目标 repo 的依赖，只启用符合当前工具范围的部分。订阅不等同于独立 API 权限。
-
-停用工具的专属条目已移入 [历史原版](../archives/retired_tooling/2026-09-22/originals/docs/SKILL_ECOSYSTEM.md)。
+## 推荐安装的 public skill repos
 
 | 方向 | Repo | 能力 |
 |---|---|---|
@@ -33,11 +29,14 @@ Start from my workspace AGENTS.md or CLAUDE.md. Follow any WORKSPACE.md or skill
 | Email | [resend_email_skill](https://github.com/grapeot/resend_email_skill) | Resend 自定义域名发信、收件读取、Markdown 导出和附件检查 |
 | Email / newsletter | [kit-skill](https://github.com/grapeot/kit-skill) | Kit Broadcast Markdown 发信 CLI，支持 dry-run、draft-only、web-only 和 tag/segment 定向；账号默认值放本地 overlay |
 | Messaging | [imessage_skill](https://github.com/grapeot/imessage_skill) | macOS iMessage send-only CLI；联系人 alias 放本地 overlay |
-| Agent operations | [ai-agent-cli-skill](https://github.com/grapeot/ai-agent-cli-skill) | 参考其中 Codex 的文件式调用；仅加载当前使用的客户端部分，Kimi CLI 与 Zcode 的支持需另行核验 |
+| Agent operations | [opencode_skill](https://github.com/grapeot/opencode_skill) | OpenCode `submit` / `submit --dry-run` / batch submission、recurring cron workflow、SQLite 数据维护和 archive |
+| Agent operations | [ai-agent-cli-skill](https://github.com/grapeot/ai-agent-cli-skill) | 用文件响应方式非交互调用 Claude Code、Codex、OpenCode、Antigravity、Grok Build；只暴露一个 root skill，CLI 细节按需加载 |
 | Agent authentication | [chat-gpt-oauth-skill](https://github.com/grapeot/chat-gpt-oauth-skill) | 用户需自行订阅 ChatGPT Plus/Pro 并在本地手动授权；提供 browser PKCE、明文 token lifecycle、refresh 与最小 Codex Responses 示例。仅推荐 owner experiment，兼容 endpoint 不稳定，不用于生产 |
-| Agent operations | [ai_session_export](https://github.com/grapeot/ai_session_export) | 参考 Codex 会话转 Markdown 的导出方案；Kimi CLI、Zcode 支持需单独核验，已有历史来源可保留检索 |
+| Agent authentication | [grok-oauth-skill](https://github.com/grapeot/grok-oauth-skill) | 用户需自行订阅 SuperGrok / X Premium+ 并在本地手动授权；提供 browser PKCE、device code、明文 token lifecycle、refresh 与最小 xAI Chat Completions 示例。仅推荐 owner experiment，兼容 endpoint 不稳定，不用于生产 |
+| Agent operations | [ai_session_export](https://github.com/grapeot/ai_session_export) | 将 OpenCode、Claude Code、Codex、Antigravity 和 Second Mind 会话增量导出为统一 Markdown 归档，供浏览和检索 |
 | Usage analytics | [ai-session-profanity-rate](https://github.com/grapeot/ai-session-profanity-rate) | 对本地 AI session 的人类 user message 做 sub-agent 粗口词元计数，提供版本化 cache、脱敏 JSON、每日 incidence 和模型构成图；真实会话与结果留在本地 |
 | Agent operations | [process-launcher](https://github.com/grapeot/process-launcher) | 本地 HTTP process launcher，适合 TCC / GUI 权限桥接、durable one-shot delayed jobs、进程日志 and 取消 |
+| Agent operations | [opencode-docker](https://github.com/grapeot/opencode-docker) | Docker 部署模版，用于快速配置 OpenCode Server 容器化运行环境 |
 | Usage analytics | [ai_usage_dashboard](https://github.com/grapeot/ai_usage_dashboard) | 多平台 AI token usage、成本估算、本地 dashboard 和 E1002 JSON |
 | Social / growth | [typefully-twitter-skill](https://github.com/grapeot/typefully-twitter-skill) | Typefully 发帖、账号指标和 X/Twitter 单帖 analytics |
 | Community publishing | [circle-post-skill](https://github.com/grapeot/circle-post-skill) | Circle community Markdown conversion, dry-run preflight, publish/update/delete CLI；社区默认值放本地 overlay |
@@ -45,8 +44,9 @@ Start from my workspace AGENTS.md or CLAUDE.md. Follow any WORKSPACE.md or skill
 | Media | [online-media-skill](https://github.com/grapeot/online-media-skill) | 在线媒体下载、ASR artifact、query pack、source identification，以及 Agent 主导的双语 SRT：Agent 负责纠错、语义断句和翻译，CLI 负责 coverage、render 和 validate |
 | Photos | [apple-photos-skill](https://github.com/grapeot/apple-photos-skill) | macOS Photos metadata 搜索、筛选、导出和备份，以及默认 dry-run、显式授权的 PhotoKit import/delete；当前 mutation 能力为 live-unverified alpha，不用于 production library |
 | Family media | [bright-horizons-photo-sync-skill](https://github.com/grapeot/bright-horizons-photo-sync-skill) | 增量备份已授权家庭账号可见的 My Bright Day 事件与媒体，支持断点续传、完整性校验和 macOS Photos 去重导入；凭证与家庭数据留在本地 |
+| Slides | [presentation_skill](https://github.com/grapeot/presentation_skill) | 默认 image-generated full-slide deck；明确不用图像生成时 fallback 到 HTML module deck |
 | Slides | [pptx.skill](https://github.com/grapeot/pptx.skill) | AI-first PPTX 读取、编辑和渲染 |
-| Images | [image-generation-skill](https://github.com/grapeot/image-generation-skill) | 仅按需参考 GPT-Image 相关部分；启用前核对脚本默认 provider 与所需权限 |
+| Images | [image-generation-skill](https://github.com/grapeot/image-generation-skill) | Gemini Flash / Gemini Pro / GPT-Image-2 文生图、图片编辑、分辨率放大 |
 | 3D / animation | [gpt_3d_skill](https://github.com/grapeot/gpt_3d_skill) | 专为用好 GPT-6 跃升后的三维建模能力而设计：通过参考分解、材质、镜头编排与反复视觉检查，改善缺少方法时仍停留在粗糙 demo 的问题。引导制作 Blender 模型、动画与 Three.js 网页漫游，含角色绑骨与本地动捕工作流 |
 | Portraits | [genai_portrait_skill](https://github.com/grapeot/genai_portrait_skill) | vision agent 驱动的人像、头像和证件照编辑；强调身份保真、摄影整体一致性、多图灯光迁移和 alpha 输出 |
 | Images | [tiff-icc-profile](https://github.com/grapeot/tiff-icc-profile) | 给未标记 TIFF 嵌入 ICC profile，常用于 DaVinci still workflow |

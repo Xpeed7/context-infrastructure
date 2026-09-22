@@ -1,0 +1,78 @@
+[
+  {
+    "path": "AGENTS.md",
+    "sha256": "a71dc5bfa17838cb4290cb4f2790152014f44c3b34de6256c94f9a37af7d9422"
+  },
+  {
+    "path": "README.md",
+    "sha256": "ae9d73fd7f177f8b1efd2b5b822ecbb694501fd73b98f97433f369a743296297"
+  },
+  {
+    "path": "setup_guide.md",
+    "sha256": "7c52982e4d0c72e4c478e66474a9a781bc8b6af6bf71f03038bb775540e292b2"
+  },
+  {
+    "path": "rules/USER.md",
+    "sha256": "5064fdd8cc3fa68f5c2c7b99279c8ebfcb4734d42054c47f1a20ff8c3200eb11"
+  },
+  {
+    "path": "rules/WORKSPACE.md",
+    "sha256": "c3231fbbdfe3ed3506b8125574e241cace8e1d09c1b88a6317a76e676361f903"
+  },
+  {
+    "path": "rules/skills/INDEX.md",
+    "sha256": "3d5a3d114219af52476916666fe1a40a4ded9e2bcfc0603be19a70cbca0270a4"
+  },
+  {
+    "path": "rules/skills/workflow_parallel_subagents.md",
+    "sha256": "e29f0930afbccca5b945f9eb4aedbbc4c193b6203f497db812f9d0ea4efd345e"
+  },
+  {
+    "path": "rules/skills/workflow_cognitive_profile_extraction.md",
+    "sha256": "2b592b0d6991f2f13f0ef38a0284439bba4f44df9d8bdd015a7da52bc47ea2bd"
+  },
+  {
+    "path": "rules/skills/workflow_deep_research_survey.md",
+    "sha256": "3da3dae2fc528b149d4fc480cb2b8fe05db4fb113972a21a343e6d61c5b561d3"
+  },
+  {
+    "path": "rules/skills/workflow_research_paper_survey_writing.md",
+    "sha256": "155e05318251f3ed9e5868d5433303792eb0927f5f541194a36385a202bdcbf2"
+  },
+  {
+    "path": "rules/skills/workflow_watchdog.md",
+    "sha256": "0a6302d03514bdcafa531ba1c72e390048b3fd40019bfbe0d3cf5dce04e2d98b"
+  },
+  {
+    "path": "rules/skills/delayed_execution.md",
+    "sha256": "69ec11789febaaa3b7ff9c17ddbd825052a2d9c67cd5536606c0c38a23facab0"
+  },
+  {
+    "path": "rules/skills/ai_session_search_archive.md",
+    "sha256": "b1770314d40f77a41b8cf3b2cd1bf5b1ab383fef40ce95d4d08593ed6cedf68f"
+  },
+  {
+    "path": "rules/skills/bestpractice_api_key_management_1password_cli.md",
+    "sha256": "56b98ccc767b639b5e1472ee97e05be1e458fc6911388b0ba139dd4f354eb670"
+  },
+  {
+    "path": "docs/CRONTAB.md",
+    "sha256": "1b98868372230b13687fa16341c498c77bdb860524274c6e12ab7f6b40db5509"
+  },
+  {
+    "path": "docs/SKILL_ECOSYSTEM.md",
+    "sha256": "3b67e9de8fc6094bbe9d3ee4095f4989da3a350eab62098c5cce47f85bf2ba0b"
+  },
+  {
+    "path": "periodic_jobs/ai_heartbeat/docs/PRD.md",
+    "sha256": "6a3c3cc01611e7980eeab41ee005bc3277965d7e184036fc6c0f3b7cf26366e8"
+  },
+  {
+    "path": "periodic_jobs/ai_heartbeat/docs/KNOWLEDGE_BASE.md",
+    "sha256": "70f58225a7d3fbb7b4c58aedf27eb64fa6bbfe9cb78b8339f704d7c51280160d"
+  },
+  {
+    "path": "rules/skills/bestpractice_ai_product_design.md",
+    "sha256": "7769ccbf8663935d5bc875c3c64aaf2327938b87a645bd82f82461d6455b3a79"
+  }
+]

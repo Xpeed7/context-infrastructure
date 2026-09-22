@@ -28,6 +28,7 @@ updated: 2026-02-13
 ```dotenv
 OPENAI_API_KEY=op://dev/dev-api-keys/openai_api_key
 TAVILY_API_KEY=op://dev/dev-api-keys/tavily_api_key
+GEMINI_API_KEY=op://dev/dev-api-keys/gemini_api_key
 ```
 
 此文件不包含明文密钥，可安全于本机保存（建议权限 `600`）。
@@ -90,7 +91,7 @@ vault 固定 `dev`，item 固定 `dev-api-keys`。推断新 service 的 1Passwor
 | Webhook 签名密钥 | `<service>_<use>_signing_secret` | `resend_webhook_signing_secret` |
 | Account ID | `<service>_account_id` | `cloudflare_account_id` |
 | 用户名/密码对 | `<service>_username` / `<service>_password` | `twine_username` / `twine_password` |
-| 环境变体 | `<service>_api_key_<env>` | `shippo_test_api_key`、`service_api_key_staging`、`resend_api_key_full` |
+| 环境变体 | `<service>_api_key_<env>` | `shippo_test_api_key`、`deepseek_api_key_opencode`、`resend_api_key_full` |
 
 完整路径：`op://dev/dev-api-keys/<field_name>`。
 
