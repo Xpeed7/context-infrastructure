@@ -50,15 +50,23 @@ def validate_date(value: str) -> tuple[str, str]:
 
 
 def summarize(ledger: dict) -> dict:
-    total_spent = sum(entry["amount"] for entry in ledger["entries"])
+    total_income = sum(
+        entry["amount"] for entry in ledger["entries"] if entry.get("type", "expense") == "income"
+    )
+    total_spent = sum(
+        entry["amount"] for entry in ledger["entries"] if entry.get("type", "expense") == "expense"
+    )
     opening_balance = ledger["opening_balance"]
-    remaining = opening_balance - total_spent
-    usage = (Decimal(total_spent) / Decimal(opening_balance) * Decimal("100")).quantize(
+    available_balance = opening_balance + total_income
+    remaining = available_balance - total_spent
+    usage = (Decimal(total_spent) / Decimal(available_balance) * Decimal("100")).quantize(
         Decimal("0.1"), rounding=ROUND_HALF_UP
-    ) if opening_balance else Decimal("0.0")
+    ) if available_balance else Decimal("0.0")
     return {
         "opening_balance": opening_balance,
+        "total_income": total_income,
         "total_spent": total_spent,
+        "available_balance": available_balance,
         "remaining": remaining,
         "usage_percent": usage,
     }
@@ -71,6 +79,7 @@ def format_message(ledger: dict, as_of: str) -> str:
         f"截至：{as_of}",
         "",
         f"🏦 初始金额：{summary['opening_balance']}元",
+        f"📥 累计收入：{summary['total_income']}元",
         f"📤 累计支出：{summary['total_spent']}元",
         f"🪙 剩余金额：{summary['remaining']}元",
         f"📊 已使用：{summary['usage_percent']}%",
@@ -78,24 +87,34 @@ def format_message(ledger: dict, as_of: str) -> str:
         "🧾 账单明细：",
     ]
     for entry in sorted(ledger["entries"], key=lambda item: (item["date"], item["id"])):
-        icon = "🛡️" if "险" in entry["item"] else "📚"
+        if entry.get("type", "expense") == "income":
+            icon = "💵"
+        elif "险" in entry["item"]:
+            icon = "🛡️"
+        else:
+            icon = "📚"
         lines.append(f"{icon} {entry['date']} {entry['person']}｜{entry['item']}｜{entry['amount']}元")
     lines.extend(["", "由AI（ChatGPT）计算并发送"])
     return "\n".join(lines)
 
 
-def add_entry(ledger: dict, date: str, person: str, item: str, amount: int) -> dict:
+def add_entry(
+    ledger: dict, date: str, person: str, item: str, amount: int, entry_type: str = "expense"
+) -> dict:
     date, precision = validate_date(date)
     if not person.strip() or not item.strip():
         raise ValueError("person 和 item 不能为空")
     if amount <= 0:
         raise ValueError("amount 必须大于 0")
+    if entry_type not in {"expense", "income"}:
+        raise ValueError("type 必须是 expense 或 income")
 
     duplicate = any(
         entry["date"] == date
         and entry["person"] == person
         and entry["item"] == item
         and entry["amount"] == amount
+        and entry.get("type", "expense") == entry_type
         for entry in ledger["entries"]
     )
     if duplicate:
@@ -108,6 +127,7 @@ def add_entry(ledger: dict, date: str, person: str, item: str, amount: int) -> d
         "person": person,
         "item": item,
         "amount": amount,
+        "type": entry_type,
     }
     ledger["entries"].append(entry)
     return entry
@@ -133,8 +153,11 @@ def build_parser() -> argparse.ArgumentParser:
     add_parser = subparsers.add_parser("add", help="新增一笔账单")
     add_parser.add_argument("--date", required=True, help="账单日期，格式 YYYY-MM 或 YYYY-MM-DD")
     add_parser.add_argument("--person", required=True, help="孩子姓名")
-    add_parser.add_argument("--item", required=True, help="支出项目")
+    add_parser.add_argument("--item", required=True, help="收支项目")
     add_parser.add_argument("--amount", required=True, type=int, help="金额，单位为元")
+    add_parser.add_argument(
+        "--type", dest="entry_type", choices=("expense", "income"), default="expense", help="账单类型"
+    )
     add_parser.set_defaults(command_handler="add")
     return parser
 
@@ -154,7 +177,7 @@ def main() -> None:
         print(format_message(ledger, args.as_of))
         return
 
-    entry = add_entry(ledger, args.date, args.person, args.item, args.amount)
+    entry = add_entry(ledger, args.date, args.person, args.item, args.amount, args.entry_type)
     save_ledger(args.data, ledger)
     print(json.dumps(entry, ensure_ascii=False, indent=2))
     print(format_message(ledger, args.date))
