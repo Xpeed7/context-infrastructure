@@ -197,7 +197,7 @@ Brainstorm 不是标题润色，也不是多 agent 泛泛复述。它必须转�
 
 **External-facing 分析文章** → 进入 [外部写作工作流](./workflow_external_writing.md)，明确论点、证据、读者和文风要求。通过当前可用客户端生成草稿与复核；保留独立冷读、事实核查和有记录的修订，不依赖固定客户端或模型。最终文本由主线程统一验收。
 
-**Internal memo**（面向用户本人或共享上下文的协作者）→ 加载 [内部写作工作流](./workflow_internal_writing.md)。先呈现最影响决策的结论和依据，并保留未确认点与下一步动作。动笔前读取 `../COMMUNICATION.md`。
+**Internal memo**（面向用户本人或共享上下文的协作者）→ 加载 [内部写作工作流](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_internal_writing.md)。先呈现最影响决策的结论和依据，并保留未确认点与下一步动作。动笔前读取 `../COMMUNICATION.md`。
 
 **共享格式要求**（两种 mode 通用）:
 - 中文 Markdown
@@ -281,4 +281,4 @@ Brainstorm 不是标题润色，也不是多 agent 泛泛复述。它必须转�
 | 用错子代理接口 | 只使用当前运行时暴露的工具、参数和 agent；缺少能力时串行，不编造路由 |
 | 调研结果变成 vendor marketing 汇总 | Phase 1 提取 claim，Phase 2 按证据功能分配维度，Phase 3 核查验证状态 |
 
-写作阶段的 reader takeaway、article warrant、source contract 与成稿验收要求见 [writing-skill](./workflow_external_writing.md)。
+写作阶段的 reader takeaway、article warrant、source contract 与成稿验收要求见 [writing-skill](https://github.com/grapeot/writing-skill/blob/master/skills/workflow_external_writing.md)。

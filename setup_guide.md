@@ -1,148 +1,34 @@
-# Setup Guide: Context Infrastructure
+# 本工程使用指南
 
-本地客户端为 Codex CLI、Kimi CLI、Zcode（GLM），使用范围以 `AGENTS.md` 和 `rules/USER.md` 为准。核心规则与手工记录可直接使用，自动记忆任务仍待适配。
+在 Codex CLI、Kimi CLI 或 Zcode 中进入本工程，先读取 [AGENTS.md](AGENTS.md)。客户端、订阅和停用工具以该入口与 [USER.md](rules/USER.md) 为准。
 
----
+## 开始任务
 
-## Step 1：填写身份文件（必填，5 分钟）
+- 查找或存放材料前，按 [WORKSPACE.md](rules/WORKSPACE.md) 定位具体目录。
+- 执行某类任务前，查 [Skills 索引](rules/skills/INDEX.md)，只读取命中的工作流。
+- 需要历史判断时，按任务检索 [记忆记录](contexts/memory/OBSERVATIONS.md) 与 [公理索引](rules/axioms/INDEX.md)。
+- 提问和讨论遵守 [执行边界](rules/EXECUTION_BOUNDARY.md)；发布、删除和系统配置遵守 [安全规则](rules/SAFETY.md)。
 
-**价值**：完成这一步，AI 的行为立刻个性化。这是 ROI 最高的一步。
+身份和偏好文件已维护，不需要每次重新填写。发现其中内容与用户明确说明不一致时，再更新对应条目。
 
-### 1a. 填写 USER.md
+## 维护文档
 
-打开 `rules/USER.md`，用自己的信息替换模板内容。
+新经验优先写入对应任务材料；可复用的方法再整理为 skill。创建或重写前读 [Skill 写作指南](rules/skills/bestpractice_skill_writing.md)，写清目标、边界、验收标准与输出位置，并更新索引。
 
-至少填写这几项：
-- **称呼**：你希望 AI 怎么叫你
-- **时区**：避免时间混乱
-- **背景**：你是谁、你做什么
-- **技术兴趣**：越具体越好
-- **会让你烦的**：帮 AI 避开你讨厌的沟通方式
+规则修改先保留原版到 `archives/<topic>/<batch>/originals/<原相对路径>`，附说明和清单；现行文件保留有效内容，并检查引用关系。归档原文只用于回溯，不进入默认规则加载或新记忆采集。
 
-**验证**：填好后，在 AI 对话里问「介绍一下你对我的了解」，看 AI 是否能准确描述你。
+## 需要额外配置的能力
 
-### 1b. 自定义 SOUL.md（可选但推荐）
+| 能力 | 当前使用条件 |
+|---|---|
+| 自动观察与反思 | 旧脚本尚未适配当前客户端，见 [定时任务状态](docs/CRONTAB.md) |
+| AI 会话归档 | `contexts/ai_sessions/` 是约定输出目录，目前尚未创建；先验证导出器支持的来源，见 [会话检索](rules/skills/ai_session_search_archive.md) |
+| 语义搜索 | 先核对已安装工具和 embedding 配置，外部资料见 [技能目录](docs/SKILL_ECOSYSTEM.md) |
+| 邮件与 Web 分享 | 按实际目的核对服务、账号与发布授权；外部资料见 [技能目录](docs/SKILL_ECOSYSTEM.md)，报告发布参考 [分享工作流](rules/skills/share_report.md) |
+| Python 脚本 | 使用目标项目已有环境；根目录 `.venv/` 当前不存在，不把约定路径当作已安装环境 |
 
-打开 `rules/SOUL.md`，调整 AI 的核心行为基调。
+外部资料被收录不代表已安装、已验证或需要购买。Coding Plan 订阅也不等同于独立 API 额度。
 
-默认内容已经是通用的良好基础（直接、有观点、不说废话）。如果你有特殊需求，在「氛围」和「核心真理」部分添加你的偏好。
+## 整理记录
 
----
-
-## Step 2：探索和扩展 Skills（推荐，15 分钟）
-
-**价值**：理解 skill 的格式，开始积累自己的可复用工作流。
-
-### 2a. 浏览现有 Skills
-
-打开 `rules/skills/INDEX.md`，快速扫描已有的 skill 分类：
-
-- **BestPractice 类**：立刻可用，与你的工具和项目无关
-- **Workflow 类**：调研、幻灯片制作、认知画像提取等，需要理解后适配
-- **API Guide 类**：⚙️ 标记的需要配置，✅ 标记的可直接用
-
-### 2b. 创建你的第一个 Skill
-
-找一件你经常做的事（调用某个 API、处理某类数据、执行某个工作流），用以下格式创建 `rules/skills/<category>_<name>.md`：
-
-```markdown
-# Skill: 名称
-
-## When to Use
-什么情况下触发这个 skill
-
-## Prerequisites
-需要什么工具/配置
-
-## 步骤
-1. 步骤一
-2. 步骤二
-
-## 示例
-具体的命令或代码
-```
-
-将新 skill 添加到 `rules/skills/INDEX.md` 对应分类。
-
-### 2c. 安装外部 public skill repo
-
-`rules/skills/` 里的内容是 starter set，不需要把所有能力都复制进来。需要更完整的能力时，先看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列出了一组独立维护的 public skill repo，例如 Tavily、Google Docs、Google Maps、Outlook、Resend、Process Launcher、PPTX、Typefully 和 Stripe。
-
-安装时，把目标 repo URL 交给你的 AI agent，让它从当前 workspace 的 `AGENTS.md` / `WORKSPACE.md` 出发，只暴露一个 root skill。通用技术 contract 留在 public repo；联系人 alias、本地路径、endpoint、token 和业务上下文留在本地 overlay。
-
-### 2d. 关于 Axioms（公理）
-
-`rules/axioms/` 包含 43 条从真实经历中蒸馏的决策原则。这些代表原作者的视角和认知模式，对你有**参考价值**，但不能替代你自己的公理。
-
-建议：
-- 先浏览 `rules/axioms/INDEX.md` 了解分类和核心含义
-- 遇到共鸣的公理，标注下来
-- 未来从你自己的项目经历中积累你的公理（参考同类格式）
-
----
-
-## Step 3：使用记忆系统（自动任务待适配）
-
-启动时读取 `AGENTS.md` 列出的核心规则，其他 skill 与公理按任务加载。需要历史经验时，检索 `contexts/memory/OBSERVATIONS.md`。
-
-`periodic_jobs/ai_heartbeat/` 的自动观察和反思脚本仍依赖旧的 OpenCode 客户端封装，尚未适配当前工具。此次整理只修改文档，不改脚本、不启停系统定时任务。
-
-现阶段可以由当前会话按任务范围整理观察记录。自动化启用条件见 [定时任务状态](docs/CRONTAB.md)；旧安装步骤已保存在 [历史原版](archives/retired_tooling/2026-09-22/originals/setup_guide.md)。
-
----
-
-## Step 4：扩展 Tier 2 组件（按需，30-60 分钟）
-
-以下组件独立工作，按需配置，不配不影响核心功能。
-
-### 语义搜索（⚙️）
-
-当你的 `contexts/` 目录积累了足够多内容后，语义搜索让你能按意思而非关键词检索历史记录。
-
-**需要**：任意 OpenAI-compatible embedding endpoint（本地或云端）
-**配置**：安装 ecosystem [semantic-search-skill](https://github.com/grapeot/semantic-search-skill)
-
-### 分享报告到 Web（⚙️）
-
-将调研报告转为 HTML 并发布到你自己的服务器。
-
-**需要**：一台有 SSH 访问权限的服务器
-**配置**：参见 `rules/skills/share_report.md`，替换 `<your-domain>` 和 `<your-server>`
-
-### 发送邮件通知（⚙️）
-
-让 AI 完成任务后发邮件通知你。
-
-**需要**：Gmail App Password（或 Outlook / Resend 替代方案）
-**配置**：`rules/skills/send_email.md` 已迁移，发信能力见 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md) 的 Email 条目（[outlook_skill](https://github.com/grapeot/outlook_skill)、[resend_email_skill](https://github.com/grapeot/resend_email_skill)、[kit-skill](https://github.com/grapeot/kit-skill)）
-
----
-
-## 何时你会感受到系统的价值
-
-**填好 USER.md 后（立刻）**：AI 的回答更有针对性，不再是泛化的通用答复。
-
-**使用 2-3 周后**：`contexts/` 目录里开始积累你的工作记录，AI 可以引用上下文。
-
-**运行 1-2 个月记忆系统后**：observer 开始识别你的工作模式，reflector 把高价值经验晋升为 skill 或 axiom。
-
-**积累 6+ 个月后**：系统开始真正了解你的判断逻辑和决策模式，你会发现 AI 给出的建议越来越接近你自己会做的决定。
-
----
-
-## 常见问题
-
-**Q：axioms 能直接用吗？**
-A：可以用来理解系统的结构，但核心内容代表原作者的视角。你的 axioms 需要从你自己的经历中提炼。参考 `rules/skills/workflow_cognitive_profile_extraction.md` 了解提炼方法。
-
-**Q：skills 能直接用吗？**
-A：✅ 标记的可以直接用。⚙️ 标记的需要替换配置（endpoint、API key、域名等）。BestPractice 类基本都可以直接用。更完整的工具型能力放在独立 public repo 里，见 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。
-
-**Q：自动观察和反思现在可以直接运行吗？**
-A：尚未适配 Codex CLI、Kimi CLI、Zcode。需要单独完成调用层适配与验证后再启用，不能仅替换模型名称。当前可先使用规则和手工记忆记录。
-
----
-
-## 下一步
-
-系统搭好后，真正的积累才刚开始。关键是持续使用：把你的工作放在这个 workspace 里，让 AI 参与每天的工作。随着时间推移，系统会越来越懂你。
+历次变更的原版、原因和验证结果见 [本地归档](archives/README.md)。本次文档整理没有配置外部服务、修改全局目录或启停定时任务。

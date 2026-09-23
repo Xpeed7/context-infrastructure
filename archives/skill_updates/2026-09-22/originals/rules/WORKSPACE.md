@@ -42,5 +42,3 @@
 - `muyun_homepage` → `adhoc_jobs/muyun_homepage/` (个人主页，镜像自 stormzhang.ai 静态站，已改名 muyun，待替换个人内容)
 - `stormzhang 文章收录` → `/Users/chenruiyan/2026-project/stormzhang/articles/` (stormzhang 教程/思考/prompt 收录库，收录规范见该目录 README.md)
 - `writing-skill` → `/Users/chenruiyan/2026-project/writing-skill/` (grapeot 公开写作工作流 repo：内部/外部写作工作流、prose lint CLI、thesis catalog；本仓库已迁移的分析/外部写作 skill 内容在此)
-
-- `ODP-CLEARING` → `/Users/chenruiyan/2025-project/ODP-CLEARING/`（Ruby／Cucumber 自动化测试工程；先读其 `AGENTS.md` 和项目章程，编码规则副本在 `rules/`）

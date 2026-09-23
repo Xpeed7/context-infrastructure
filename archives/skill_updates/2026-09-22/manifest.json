@@ -1,0 +1,38 @@
+[
+  {
+    "path": "rules/skills/INDEX.md",
+    "sha256": "7f9582399c5f8e8781c48362c87295a3415238a9a6b6bdfb9e435952edacf0cb"
+  },
+  {
+    "path": "rules/skills/workflow_external_writing.md",
+    "sha256": "6c261850d91a873742b53c00688e150e6c16ed92907e2ab44718dd16df440b85"
+  },
+  {
+    "path": "rules/skills/workflow_internal_writing.md",
+    "sha256": "774ca0ccbedc8827815105c7f384fb52b86d4528130bc399968ebcd5ad82dd8b"
+  },
+  {
+    "path": "rules/skills/bestpractice_external_prose.md",
+    "sha256": "1dd3fef794405c16ad04bda11976ed2a1d8fc4a662ad142c687c6c19f9260406"
+  },
+  {
+    "path": "rules/skills/reference_writing_thesis_catalog.md",
+    "sha256": "c1543542c80ef04548a7cc0ad18b8ef3d3351c01252c8f215935982397d4195c"
+  },
+  {
+    "path": "rules/skills/external_prose_lint.md",
+    "sha256": "5bd6d197f19825664a892611328b115b675008ad6d5bc91cce12777ffcd8c45f"
+  },
+  {
+    "path": "rules/skills/workflow_deep_research_survey.md",
+    "sha256": "85bc468139cc647794df0c9574c6c07a7000f4af01a2b197d2001ca1bd95f8ac"
+  },
+  {
+    "path": "rules/WORKSPACE.md",
+    "sha256": "d8fc858f6a6e7308981d835629ad8f7ce274f824b183005e90695a6162e3bd9f"
+  },
+  {
+    "path": "archives/README.md",
+    "sha256": "f424efc07e584ac0db217d6d9c12810a20ab266eae6d9ce025c3855b1f64ff59"
+  }
+]

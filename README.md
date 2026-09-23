@@ -1,96 +1,36 @@
-# Context Infrastructure — Reference Implementation
+# Context Infrastructure
 
-> English version: [https://github.com/grapeot/context-infrastructure-en](https://github.com/grapeot/context-infrastructure-en)
->
-> 背景阅读：[为什么AI只会说正确的废话，以及怎么把它逼出舒适区](https://yage.ai/context-infrastructure.html)
+本地个人上下文工程：集中维护 AI 协作规则、技能索引、调研与写作材料，以及可检索的经验记录。当前使用 Codex CLI、Kimi CLI、Zcode（GLM）；具体使用范围见 [AGENTS.md](AGENTS.md)。
 
-这是一个运行了一年的 context infrastructure 系统的完整结构。主要价值是作为 reference implementation，让你看到系统长什么样、数据如何流动、记忆如何积累。
+## 日常入口
 
-**核心定位**：这不是开箱即用的工具，而是一个可以参考的蓝图。Clone 下来后，你可以立刻体验「有 context vs 没有 context」的差异。但要让 AI 真正变成你自己的，需要从头采集你的行为数据——没有捷径。
+| 需要做什么 | 从哪里开始 |
+|---|---|
+| 开始一次 AI 会话 | [工程规则](AGENTS.md) |
+| 了解如何使用和维护 | [使用指南](setup_guide.md) |
+| 查找或存放文件 | [目录路由](rules/WORKSPACE.md) |
+| 查找可复用工作流 | [Skills 索引](rules/skills/INDEX.md) |
+| 回顾个人偏好与经验 | [用户背景](rules/USER.md)、[记忆记录](contexts/memory/OBSERVATIONS.md) |
+| 查阅整理前的文档 | [本地归档](archives/README.md) |
 
----
+## 目录分工
 
-## 当前本地使用范围
+- `rules/`：核心规范、公理和按需读取的技能。
+- `contexts/`：调研、思考、写作、学习与记忆材料，具体子目录以目录路由为准。
+- `adhoc_jobs/`：独立项目和一次性任务。
+- `tools/`：工具脚本与模板，使用前检查依赖和配置。
+- `periodic_jobs/`：定时任务代码；自动记忆仍为旧实现，状态见 [CRONTAB.md](docs/CRONTAB.md)。
+- `docs/`：组件状态和外部能力资料。
+- `archives/`：退出日常使用的文档原版，不默认加载。
 
-使用 Codex CLI、Kimi CLI、Zcode（GLM），已订阅 Codex、Kimi、GLM Coding Plan。现行工作流按这些入口维护，具体工具能力以当前会话为准。
+## 能力状态
 
-历史工具规则保存在 [`archives/retired_tooling/2026-09-22/`](archives/retired_tooling/2026-09-22/README.md)，不默认加载。自动记忆脚本仍为旧实现，尚未适配当前客户端，见 [`docs/CRONTAB.md`](docs/CRONTAB.md)。
+核心规则、现有技能文档和手工记忆记录可以使用。文档存在不代表相关工具已安装或调用链已验证；自动记忆、会话导出和外部服务需要各自核验。
 
-## Quick Start（5 分钟）
+需要额外能力时参考 [外部技能目录](docs/SKILL_ECOSYSTEM.md)，按实际任务选用，不必安装整套工具。安全与发布边界见 [SAFETY.md](rules/SAFETY.md)。
 
-```bash
-git clone https://github.com/grapeot/context-infrastructure
-cd context-infrastructure
-# 用 Codex CLI / Kimi CLI / Zcode 打开这个目录
-```
+## 来源
 
-然后：打开 [`rules/USER.md`](rules/USER.md)，填写你的基本信息。这是 ROI 最高的一步，完成后 AI 的行为立刻个性化。
+本工程基于 [grapeot/context-infrastructure](https://github.com/grapeot/context-infrastructure) 的参考结构维护。上游背景文章：[为什么 AI 只会说正确的废话，以及怎么把它逼出舒适区](https://yage.ai/context-infrastructure.html)。历史案例保留原有语境，不代表用户当前工具或所有偏好。
 
-详细步骤见 [`setup_guide.md`](setup_guide.md)。
-
-如果你想把它扩展成更完整的工作系统，可以看 [`docs/SKILL_ECOSYSTEM.md`](docs/SKILL_ECOSYSTEM.md)。那里列了一组可单独安装的 public skill repo，例如 Web 搜索、Google Docs、Google Maps、邮件/newsletter、PPTX、社交媒体、支付分析、家庭网络分析和本地 process launcher。`context-infrastructure` 保持轻量；完整能力通过独立 repo 按需安装。
-
----
-
-## 目录结构
-
-```
-context-infrastructure/
-├── AGENTS.md                    # 根路由表（AI 每次 session 的起点）
-├── setup_guide.md               # 配置指引
-├── .env.example                 # 环境变量模板
-│
-├── docs/
-│   ├── CRONTAB.md               # 定时任务适配状态与启用条件
-│   └── SKILL_ECOSYSTEM.md       # 可单独安装的 public skill repo 目录
-│
-├── rules/
-│   ├── SOUL.md                  # AI 的身份和行为基调（模板）
-│   ├── USER.md                  # 你的偏好和背景（模板）
-│   ├── COMMUNICATION.md         # 沟通风格指南（可直接用）
-│   ├── WORKSPACE.md             # 目录路由索引
-│   ├── axioms/                  # 43 条决策公理（展示层）
-│   └── skills/                  # 25+ 个可复用 skill（展示层）
-│
-├── archives/                   # 历史文档与规则原版，不默认加载
-│
-├── contexts/
-│   ├── memory/
-│   │   └── OBSERVATIONS.md      # 三层记忆系统的 L1/L2 层
-│   ├── survey_sessions/         # 调研报告存放目录
-│   ├── daily_records/           # 日常记录存放目录
-│   ├── thought_review/          # 思考复盘存放目录
-│   └── writing/                 # 公众号/博客文章创作（每篇一目录）
-│
-├── periodic_jobs/
-│   └── ai_heartbeat/
-│       ├── docs/
-│       │   ├── PRD.md           # 记忆系统设计文档
-│       │   └── KNOWLEDGE_BASE.md # 观察和反思的 SOP
-│       └── src/v0/
-│           ├── observer.py      # 每日观察脚本（需配置 cron）
-│           └── reflector.py     # 每周反思脚本（需配置 cron）
-│
-├── tools/
-│   └── share_report/            # 报告发布（Tier 2）
-│
-└── adhoc_jobs/                  # 按需任务存放目录
-```
-
-> 语义搜索已升级为独立 public skill repo：[semantic-search-skill](https://github.com/grapeot/semantic-search-skill)，不再放在 `tools/` 下。
-
----
-
-## 三层结构
-
-**展示层（可以参考，不能复制）**：[`rules/axioms/`](rules/axioms/) 和 [`rules/skills/`](rules/skills/) 包含了这个系统积累一年的内容。43 条公理是从具体经历中蒸馏出来的，skills 是从真实项目中总结的。这些代表原作者的视角，对你有参考价值，但不能替代你自己积累的认知。
-
-**可复用层（直接用）**：[`rules/SOUL.md`](rules/SOUL.md)、[`rules/USER.md`](rules/USER.md) 是模板，填写即可使用。[`rules/COMMUNICATION.md`](rules/COMMUNICATION.md) 是通用的沟通风格指南，大多数人可以直接采用。[`periodic_jobs/ai_heartbeat/`](periodic_jobs/ai_heartbeat/) 保留记忆系统的旧实现代码，当前客户端尚未适配。适配状态与启用条件见 [`docs/CRONTAB.md`](docs/CRONTAB.md)。
-
-**不可复用层**：公理的具体内容、skill 背后的具体经验。理解它们的结构和形成方式，然后从你自己的数据中积累。
-
----
-
-## License
-
-MIT
+License：MIT。

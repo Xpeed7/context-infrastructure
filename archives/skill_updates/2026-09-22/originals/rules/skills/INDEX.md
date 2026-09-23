@@ -46,13 +46,12 @@
 - [个人文风改写工作流](./workflow_rewrite_in_my_style.md) — 把中文草稿改写成用户自己的写作口吻，保留立场并显式报告删改与逻辑问题
 - [公众号写作风格卡](./wechat_writing_style_card.md) — 作者本人的公众号写作风格约束（先亮观点、话题块推进、自嘲不端着、抽象后落具体细节），写初稿或改写时与 `workflow_rewrite_in_my_style.md` 配合使用
 - [公众号文章创作工作流](./workflow_wechat_article.md) — 单篇文章的端到端容器：选题→调研→分析→改写→配图，每篇一个目录，素材引用 survey_sessions 不复制
-- [公众号八步协作工作流（stormzhang）](./workflow_wechat_article_stormzhang.md) — 选题、大纲、逐节写作、文风改写、人工打磨、排版、头图与按授权推送草稿箱；流程借鉴，不是模仿作者口吻。
 - [Guizang Social Card 工作流](./workflow_guizang_social_card.md) — 社媒图文卡片路由 skill：小红书 3:4、公众号 21:9+1:1、截图证据型内容优先
 - [公开 Consensus Net Income 审计工作流](./workflow_public_consensus_net_income_audit.md) — 通过 MarketScreener 等公开金融站点核验一组股票的 FY/CY consensus net income。触发词："consensus net income"、"MarketScreener 审计"、"FY2026E 净利润共识"
 - [科研论文调研与写作工作流](./workflow_research_paper_survey_writing.md) — 把科研论文重构为面向技术从业者的深度解读文章。触发词："分析这篇论文"、"写论文解读"、"paper analysis"
-- [外部写作与分析](./workflow_external_writing.md) — 论点、证据与读者要求；分析视角配合下方 Thesis Catalog，优先读取本地 writing-skill 正文。
-- [External Prose Lint CLI](./external_prose_lint.md) — 中文 prose 扫描工具；正文与实现优先读取本地 writing-skill。
-- [内部写作工作流](./workflow_internal_writing.md) — 内部文档的结论、概念顺序与证据组织；优先读取本地 writing-skill 正文。
+- [外部写作与分析](./workflow_external_writing.md) — 论点、证据与读者要求；分析视角配合下方 Thesis Catalog，正文在 writing-skill。
+- [External Prose Lint CLI](./external_prose_lint.md) — 中文 prose 扫描工具；正文与实现位于 writing-skill。
+- [内部写作工作流](./workflow_internal_writing.md) — 内部文档的结论、概念顺序与证据组织；正文在 writing-skill。
 - [认知画像提取工作流](./workflow_cognitive_profile_extraction.md) — 从群聊、Slack、Discord、邮件及播客转录等非结构化对话中提炼可预测的认知公理；主线程完成最终写作与质量把关
 - 语义搜索技能 → 见 ecosystem [semantic-search-skill](https://github.com/grapeot/semantic-search-skill)：基于本地文本 embedding 与 cosine 相似度检索，支持任意 OpenAI-compatible endpoint
 - [知识飞轮设计模式](./workflow_knowledge_flywheel.md) — 笨数据 + 笨方法 + 笨模型 = 精知识
@@ -66,8 +65,8 @@
 
 通用的最佳实践和经验教训。
 
-- [外部中文 prose 诊断词汇表](./bestpractice_external_prose.md) — 中文文风审阅参考，按需读取；优先读取本地 writing-skill 正文。
-- [外部文章启发性分析视角（Thesis Catalog）](./reference_writing_thesis_catalog.md) — 分析素材、构造论点时读取；优先读取本地 writing-skill 正文。
+- [外部中文 prose 诊断词汇表](./bestpractice_external_prose.md) — 中文文风审阅参考，按需读取；正文在 writing-skill。
+- [外部文章启发性分析视角（Thesis Catalog）](./reference_writing_thesis_catalog.md) — 分析素材、构造论点时读取；正文在 writing-skill。
 - [内部文档排版与自适应视觉组件规范](./bestpractice_internal_visuals.md) — 内部 Memo、RFC 与工作周报排版；提供自适应 HTML 卡片组件、主题变量与深浅色模式适配
 - [AI 编程核心方法论](./bestpractice_ai_programming_mindset.md) — 70% 问题、成功标准、可验证性
 - [Coding 规范与纪律](./bestpractice_coding_standards.md) — 编码前思考、简洁优先、精准修改、目标驱动执行、调试纪律

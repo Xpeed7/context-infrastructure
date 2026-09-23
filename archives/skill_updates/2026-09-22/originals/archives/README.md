@@ -5,5 +5,3 @@
 - [2026-09-22 工具文档整理](retired_tooling/2026-09-22/README.md)：围绕 Codex CLI、Kimi CLI、Zcode 整理现行入口，保留旧说明原版与校验清单。
 
 - [2026-09-22 第二轮入口与索引精简](docs_simplification/2026-09-22_round_2/README.md)：精简工程入口、使用指南和技能索引，修正目录及能力状态。
-
-- [2026-09-22 写作技能与编码规则接入](skill_updates/2026-09-22/README.md)：八步公众号协作、本地写作路由及 ODP-CLEARING 项目约束。
